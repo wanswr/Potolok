@@ -119,19 +119,6 @@ export const CeilingTypes = () => {
         }
       });
 
-      // Section Entrance Parallax
-      gsap.fromTo(containerRef.current,
-        { y: 150 },
-        {
-          y: 0,
-          scrollTrigger: {
-            trigger: containerRef.current,
-            start: 'top bottom',
-            end: 'top top',
-            scrub: true,
-          }
-        }
-      );
     });
 
     return () => ctx.revert();
@@ -159,10 +146,11 @@ export const CeilingTypes = () => {
           </button>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8" style={{ perspective: '1200px' }}>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8" style={{ perspective: '2000px' }}>
           {ceilingTypes.map((type, index) => (
             <div
               key={index}
+              data-journey-element
               onMouseMove={(e) => handleMouseMove(e, e.currentTarget)}
               onMouseLeave={(e) => handleMouseLeave(e.currentTarget)}
               className="ceiling-card group relative h-[500px] md:h-[600px] rounded-[40px] overflow-hidden bg-white border border-black/5 cursor-pointer will-change-transform"

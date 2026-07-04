@@ -65,6 +65,7 @@ export const FAQ = () => {
             {faqs.map((faq, index) => (
               <div
                 key={index}
+                data-journey-element
                 className={cn(
                   "faq-item border border-gray-border rounded-[32px] overflow-hidden transition-all duration-500",
                   openIndex === index ? "bg-gray-soft shadow-sm" : "bg-white hover:border-accent/30"

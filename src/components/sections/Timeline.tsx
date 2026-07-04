@@ -100,7 +100,7 @@ export const Timeline = () => {
 
             <div className="space-y-32">
               {steps.map((step, index) => (
-                <div key={index} className="timeline-step relative flex flex-col md:flex-row items-center">
+                <div key={index} data-journey-element className="timeline-step relative flex flex-col md:flex-row items-center">
                   {/* Step Number Circle */}
                   <div className="step-circle absolute left-[20px] md:left-1/2 -translate-x-1/2 w-12 h-12 rounded-full bg-white border-2 border-gray-border flex items-center justify-center font-bold text-xl z-20 transition-all duration-500">
                     {index + 1}

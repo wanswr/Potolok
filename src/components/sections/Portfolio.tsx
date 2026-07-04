@@ -88,6 +88,7 @@ export const Portfolio = () => {
           {projects.map((project, index) => (
             <div
               key={index}
+              data-journey-element
               className={`portfolio-item group relative rounded-[48px] overflow-hidden bg-white shadow-sm transition-all duration-700 h-[600px]`}
             >
               <Image

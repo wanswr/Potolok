@@ -89,7 +89,7 @@ export const FinalCTA = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
 
           {/* Content Side */}
-          <div className="cta-content-side">
+          <div data-journey-element className="cta-content-side">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent/20 border border-accent/30 text-accent text-sm font-bold mb-8">
               <span className="relative flex h-2 w-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-75"></span>
@@ -142,7 +142,7 @@ export const FinalCTA = () => {
           </div>
 
           {/* Form Side */}
-          <div ref={formRef} className="bg-white rounded-[48px] p-10 md:p-16 text-black relative shadow-2xl shadow-accent/10">
+          <div ref={formRef} data-journey-element className="bg-white rounded-[48px] p-10 md:p-16 text-black relative shadow-2xl shadow-accent/10">
             {status === 'success' ? (
               <div className="text-center py-10">
                 <div className="w-24 h-24 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-8">

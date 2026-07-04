@@ -72,22 +72,6 @@ export const TrustBlock = () => {
         });
       }
 
-      // Parallax effect on the whole section
-      gsap.fromTo(sectionRef.current,
-        { y: 100, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          duration: 1.5,
-          ease: 'power2.out',
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: 'top bottom',
-            end: 'top top',
-            scrub: true,
-          }
-        }
-      );
     });
 
     return () => ctx.revert();
@@ -110,11 +94,12 @@ export const TrustBlock = () => {
         <div
           ref={cardsRef}
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-          style={{ perspective: '1000px' }}
+          style={{ perspective: '2000px' }}
         >
           {benefits.map((benefit, index) => (
             <div
               key={index}
+              data-journey-element
               className="group p-8 rounded-[32px] bg-gray-soft border border-gray-border hover:bg-white hover:shadow-2xl hover:shadow-black/10 transition-all duration-500 hover:-translate-y-4 hover:rotate-1"
             >
               <div className="w-14 h-14 rounded-2xl bg-white flex items-center justify-center mb-8 shadow-sm group-hover:scale-110 group-hover:bg-accent group-hover:text-white transition-all duration-500">

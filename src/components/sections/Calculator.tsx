@@ -70,7 +70,7 @@ export const Calculator = () => {
   return (
     <section id="calculator" ref={sectionRef} data-journey-section className="section-padding bg-white relative z-10 rounded-t-[60px] -mt-20">
       <div className="container mx-auto px-6">
-        <div className="max-w-6xl mx-auto calc-card">
+        <div data-journey-element className="max-w-6xl mx-auto calc-card">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
 
             {/* Form Side */}
