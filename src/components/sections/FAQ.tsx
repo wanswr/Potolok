@@ -54,7 +54,7 @@ export const FAQ = () => {
   }, []);
 
   return (
-    <section ref={containerRef} className="section-padding bg-white relative z-10 rounded-t-[60px] -mt-20">
+    <section ref={containerRef} data-journey-section className="section-padding bg-white relative z-10 rounded-t-[60px] -mt-20">
       <div className="container mx-auto px-6">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-4xl md:text-6xl font-bold tracking-tight mb-16 text-center">

@@ -138,7 +138,7 @@ export const CeilingTypes = () => {
   }, []);
 
   return (
-    <section id="types" ref={containerRef} className="section-padding bg-gray-soft relative z-10 rounded-t-[60px] -mt-20">
+    <section id="types" ref={containerRef} data-journey-section className="section-padding bg-gray-soft relative z-10 rounded-t-[60px] -mt-20">
       <div className="container mx-auto px-6">
         <div className="types-header flex flex-col md:flex-row md:items-end justify-between mb-20 gap-8">
           <div className="max-w-2xl">

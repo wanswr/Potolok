@@ -81,7 +81,7 @@ export const FinalCTA = () => {
   }, []);
 
   return (
-    <section id="contacts" ref={sectionRef} className="section-padding bg-black text-white relative overflow-hidden rounded-t-[60px] -mt-20">
+    <section id="contacts" ref={sectionRef} data-journey-section className="section-padding bg-black text-white relative overflow-hidden rounded-t-[60px] -mt-20">
       {/* Decorative background */}
       <div className="cta-glow absolute bottom-0 left-0 w-full h-full bg-gradient-to-tr from-accent/20 via-transparent to-transparent pointer-events-none blur-[120px] opacity-50" />
 

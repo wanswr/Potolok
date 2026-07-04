@@ -71,7 +71,7 @@ export const Portfolio = () => {
   }, []);
 
   return (
-    <section id="portfolio" ref={sectionRef} className="section-padding bg-gray-soft relative z-10 rounded-t-[60px] -mt-20">
+    <section id="portfolio" ref={sectionRef} data-journey-section className="section-padding bg-gray-soft relative z-10 rounded-t-[60px] -mt-20">
       <div className="container mx-auto px-6">
         <div className="portfolio-header max-w-3xl mb-20">
           <h2 className="text-4xl md:text-6xl font-bold tracking-tight mb-8">

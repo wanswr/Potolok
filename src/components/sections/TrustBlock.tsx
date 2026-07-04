@@ -94,7 +94,7 @@ export const TrustBlock = () => {
   }, []);
 
   return (
-    <section id="features" ref={sectionRef} className="section-padding bg-white overflow-hidden rounded-t-[60px] relative z-20 -mt-20">
+    <section id="features" ref={sectionRef} data-journey-section className="section-padding bg-white overflow-hidden rounded-t-[60px] relative z-20 -mt-20">
       <div className="container mx-auto px-6">
         <div className="max-w-3xl mb-20">
           <h2 ref={titleRef} className="text-4xl md:text-6xl font-bold tracking-tight mb-8">

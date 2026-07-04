@@ -81,7 +81,7 @@ export const Timeline = () => {
   }, []);
 
   return (
-    <section className="section-padding bg-white overflow-hidden relative z-10 rounded-t-[60px] -mt-20">
+    <section data-journey-section className="section-padding bg-white overflow-hidden relative z-10 rounded-t-[60px] -mt-20">
       <div className="container mx-auto px-6">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-4xl md:text-6xl font-bold tracking-tight mb-20 text-center">

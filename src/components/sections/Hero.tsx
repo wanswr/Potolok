@@ -100,6 +100,7 @@ export const Hero = () => {
   return (
     <section
       ref={containerRef}
+      data-journey-section
       className="relative w-full h-screen overflow-hidden bg-black"
     >
       {/* Immersive Background */}

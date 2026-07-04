@@ -9,24 +9,25 @@ import { SocialProof } from '@/components/sections/SocialProof';
 import { FAQ } from '@/components/sections/FAQ';
 import { FinalCTA } from '@/components/sections/FinalCTA';
 import { StickyCTA } from '@/components/ui/StickyCTA';
+import { JourneyController } from '@/components/JourneyController';
 
 export default function Home() {
   return (
     <main className="min-h-screen bg-black">
       <Header />
-      <div id="smooth-wrapper">
-        <div id="smooth-content">
-          <Hero />
+      <JourneyController>
+        <Hero />
+        <div className="relative z-20">
           <TrustBlock />
-      <CeilingTypes />
-      <Calculator />
-      <Portfolio />
-      <Timeline />
-      <SocialProof />
-      <FAQ />
+          <CeilingTypes />
+          <Calculator />
+          <Portfolio />
+          <Timeline />
+          <SocialProof />
+          <FAQ />
           <FinalCTA />
         </div>
-      </div>
+      </JourneyController>
       <StickyCTA />
 
       <footer className="bg-[#111111] py-20 border-t border-white/5">
