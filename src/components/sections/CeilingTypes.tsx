@@ -1,92 +1,131 @@
 'use client';
 
-import React, { useRef } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import React, { useEffect, useRef } from 'react';
 import Image from 'next/image';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { ArrowRight } from 'lucide-react';
+
+gsap.registerPlugin(ScrollTrigger);
 
 const ceilingTypes = [
   {
-    id: 'matte',
-    title: 'Матовый потолок',
-    description: 'Классическое решение. Выглядит как идеально ровная оштукатуренная поверхность.',
-    image: 'https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=800&q=80',
-    color: 'bg-gray-100',
+    title: 'Матовый',
+    description: 'Классическое решение, которое выглядит как идеально ровная оштукатуренная поверхность. Не бликует.',
+    features: ['Без бликов', 'Скрывает дефекты', 'Долговечность'],
+    price: 'от 550 ₽/м²',
+    image: 'https://images.unsplash.com/photo-1513694203232-719a280e022f?q=80&w=2069&auto=format&fit=crop',
   },
   {
-    id: 'glossy',
-    title: 'Глянцевый потолок',
-    description: 'Визуально расширяет пространство за счет зеркального эффекта. Идеально для небольших комнат.',
-    image: 'https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=800&q=80',
-    color: 'bg-white',
+    title: 'Сатиновый',
+    description: 'Обладает легким перламутровым блеском и гладкой текстурой. Идеально для спален и гостиных.',
+    features: ['Мягкий блеск', 'Элегантный вид', 'Универсальность'],
+    price: 'от 650 ₽/м²',
+    image: 'https://images.unsplash.com/photo-1502005229762-cf1b2da7c5d6?q=80&w=2030&auto=format&fit=crop',
   },
   {
-    id: 'satin',
-    title: 'Сатиновый потолок',
-    description: 'Мягкий перламутровый блеск. Сочетает преимущества матовых и глянцевых полотен.',
-    image: 'https://images.unsplash.com/photo-1617104424032-b9bd6972d0e4?auto=format&fit=crop&w=800&q=80',
-    color: 'bg-slate-50',
+    title: 'Глянцевый',
+    description: 'Зеркальный эффект визуально расширяет пространство. Отлично подходит для небольших помещений.',
+    features: ['Зеркальный эффект', 'Визуальный объем', 'Яркие цвета'],
+    price: 'от 600 ₽/м²',
+    image: 'https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?q=80&w=2064&auto=format&fit=crop',
   },
   {
-    id: 'led',
-    title: 'Световые линии / LED',
-    description: 'Современное дизайнерское освещение, интегрированное прямо в плоскость потолка.',
-    image: 'https://images.unsplash.com/photo-1513506494265-99b15e8c093a?auto=format&fit=crop&w=800&q=80',
-    color: 'bg-blue-50',
+    title: 'Световой',
+    description: 'Современное решение со встроенными световыми линиями или парящим эффектом по периметру.',
+    features: ['Встроенный свет', 'WOW-эффект', 'Трендовый дизайн'],
+    price: 'от 1200 ₽/м²',
+    image: 'https://images.unsplash.com/photo-1618221195710-dd6b41faeaa6?q=80&w=2070&auto=format&fit=crop',
   },
 ];
 
 export const CeilingTypes = () => {
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.from('.ceiling-card', {
+        y: 80,
+        opacity: 0,
+        duration: 1,
+        stagger: 0.2,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: 'top 75%',
+        }
+      });
+    });
+
+    return () => ctx.revert();
+  }, []);
+
   return (
-    <section className="section-padding bg-[#F8F9FA]">
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-5xl font-bold mb-4">Виды потолков</h2>
-          <p className="text-gray-600 text-lg max-w-2xl mx-auto">
-            Подберем идеальное решение под ваш интерьер и бюджет.
-          </p>
+    <section id="types" ref={containerRef} className="section-padding bg-gray-soft">
+      <div className="container mx-auto px-6">
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-20 gap-8">
+          <div className="max-w-2xl">
+            <h2 className="text-4xl md:text-6xl font-bold tracking-tight mb-8">
+              Виды <br />
+              <span className="text-accent">потолков</span>
+            </h2>
+            <p className="text-xl text-black/60">
+              Подберем идеальное решение под ваш бюджет и интерьер.
+              От классики до ультрасовременных световых решений.
+            </p>
+          </div>
+          <button className="hidden md:flex items-center gap-3 text-lg font-bold group">
+            Смотреть все виды
+            <div className="w-12 h-12 rounded-full border border-black/10 flex items-center justify-center group-hover:bg-black group-hover:text-white transition-all">
+              <ArrowRight size={20} />
+            </div>
+          </button>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {ceilingTypes.map((type, index) => (
-            <CeilingCard key={type.id} type={type} index={index} />
+            <div
+              key={index}
+              className="ceiling-card group relative h-[500px] md:h-[600px] rounded-[40px] overflow-hidden bg-white border border-black/5"
+            >
+              {/* Image */}
+              <div className="absolute inset-0 overflow-hidden">
+                <Image
+                  src={type.image}
+                  alt={type.title}
+                  fill
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+              </div>
+
+              {/* Content */}
+              <div className="absolute inset-0 p-10 flex flex-col justify-end text-white">
+                <div className="mb-6 transform transition-transform duration-500 group-hover:-translate-y-2">
+                  <div className="text-accent font-bold text-lg mb-2">{type.price}</div>
+                  <h3 className="text-4xl font-bold mb-4">{type.title}</h3>
+                  <p className="text-white/70 text-lg leading-relaxed max-w-md opacity-0 group-hover:opacity-100 transition-opacity duration-500 hidden md:block">
+                    {type.description}
+                  </p>
+                </div>
+
+                <div className="flex flex-wrap gap-2 mb-8 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
+                  {type.features.map((feature, i) => (
+                    <span key={i} className="px-4 py-2 bg-white/10 backdrop-blur-md rounded-full text-sm border border-white/10">
+                      {feature}
+                    </span>
+                  ))}
+                </div>
+
+                <button className="w-full md:w-fit bg-white text-black px-8 py-4 rounded-full font-bold transition-all hover:bg-accent hover:text-white">
+                  Выбрать этот тип
+                </button>
+              </div>
+            </div>
           ))}
         </div>
       </div>
     </section>
-  );
-};
-
-const CeilingCard = ({ type, index }: { type: typeof ceilingTypes[0], index: number }) => {
-  const cardRef = useRef<HTMLDivElement>(null);
-
-  return (
-    <motion.div
-      ref={cardRef}
-      initial={{ opacity: 0, x: index % 2 === 0 ? -50 : 50 }}
-      whileInView={{ opacity: 1, x: 0 }}
-      viewport={{ once: true, margin: "-100px" }}
-      transition={{ duration: 0.8, ease: "easeOut" }}
-      className="group relative overflow-hidden rounded-3xl bg-white shadow-sm border border-gray-100"
-    >
-      <div className="aspect-[16/10] relative overflow-hidden">
-        <Image
-          src={type.image}
-          alt={type.title}
-          fill
-          className="object-cover transition-transform duration-700 group-hover:scale-110"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-      </div>
-
-      <div className="p-8">
-        <h3 className="text-2xl font-bold mb-3">{type.title}</h3>
-        <p className="text-gray-600 mb-6 leading-relaxed">
-          {type.description}
-        </p>
-        <button className="text-accent font-semibold flex items-center gap-2 group-hover:translate-x-2 transition-transform">
-          Подробнее <span>→</span>
-        </button>
-      </div>
-    </motion.div>
   );
 };

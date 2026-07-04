@@ -1,138 +1,128 @@
 'use client';
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
+import Image from 'next/image';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { cn } from '@/lib/utils';
 
 gsap.registerPlugin(ScrollTrigger);
 
 export const Hero = () => {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [images, setImages] = useState<HTMLImageElement[]>([]);
-  const [currentFrame, setCurrentFrame] = useState(0);
-
-  // Total frames for the scroll animation
-  const frameCount = 30;
-
-  // Placeholder image sequence generation (in a real app, these would be real frames)
-  // For the demo, we will simulate the sequence with a few repeated placeholders or gradients
-  useEffect(() => {
-    const loadedImages: HTMLImageElement[] = [];
-    let loadedCount = 0;
-
-    for (let i = 0; i < frameCount; i++) {
-      const img = new Image();
-      // Using a placeholder service that can simulate some variation
-      // In a real project, these would be /public/frames/hero-001.jpg etc.
-      img.src = `https://picsum.photos/id/${10 + (i % 5)}/1920/1080`;
-      img.onload = () => {
-        loadedCount++;
-        if (loadedCount === frameCount) {
-          setImages(loadedImages);
-        }
-      };
-      loadedImages.push(img);
-    }
-  }, []);
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const bgRef = useRef<HTMLDivElement>(null);
+  const titleRef = useRef<HTMLHeadingElement>(null);
+  const subtitleRef = useRef<HTMLParagraphElement>(null);
+  const ctaRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (images.length < frameCount || !canvasRef.current || !containerRef.current) return;
+    const ctx = gsap.context(() => {
+      // Entrance Animations
+      const tl = gsap.timeline();
 
-    const canvas = canvasRef.current;
-    const context = canvas.getContext('2d');
-    if (!context) return;
+      tl.from(titleRef.current, {
+        y: 40,
+        opacity: 0,
+        duration: 1.2,
+        ease: 'power4.out',
+      })
+      .from(subtitleRef.current, {
+        y: 20,
+        opacity: 0,
+        duration: 1,
+        ease: 'power3.out',
+      }, '-=0.8')
+      .from(ctaRef.current?.children || [], {
+        y: 20,
+        opacity: 0,
+        duration: 0.8,
+        stagger: 0.2,
+        ease: 'power3.out',
+      }, '-=0.6');
 
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-
-    const render = (index: number) => {
-      if (images[index]) {
-        context.clearRect(0, 0, canvas.width, canvas.height);
-
-        // Draw image with "cover" behavior
-        const img = images[index];
-        const imgRatio = img.width / img.height;
-        const canvasRatio = canvas.width / canvas.height;
-        let drawWidth, drawHeight, drawX, drawY;
-
-        if (canvasRatio > imgRatio) {
-          drawWidth = canvas.width;
-          drawHeight = canvas.width / imgRatio;
-          drawX = 0;
-          drawY = (canvas.height - drawHeight) / 2;
-        } else {
-          drawWidth = canvas.height * imgRatio;
-          drawHeight = canvas.height;
-          drawX = (canvas.width - drawWidth) / 2;
-          drawY = 0;
+      // Scroll Animations
+      gsap.to(bgRef.current, {
+        scale: 1.15,
+        yPercent: 10,
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: 'top top',
+          end: 'bottom top',
+          scrub: true,
         }
+      });
 
-        context.drawImage(img, drawX, drawY, drawWidth, drawHeight);
-      }
-    };
-
-    const airbnb = { frame: 0 };
-
-    gsap.to(airbnb, {
-      frame: frameCount - 1,
-      snap: { frame: 1 },
-      ease: 'none',
-      scrollTrigger: {
-        trigger: containerRef.current,
+      // Future Scroll Video Placeholder Logic
+      // This section is already set up to pin the container if we switch to canvas/video scrub
+      /*
+      ScrollTrigger.create({
+        trigger: sectionRef.current,
         start: 'top top',
-        end: '+=300%',
-        scrub: 0.5,
+        end: '+=100%',
         pin: true,
-      },
-      onUpdate: () => {
-        render(Math.round(airbnb.frame));
-      },
+      });
+      */
     });
 
-    render(0);
-
-    const handleResize = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-      render(Math.round(airbnb.frame));
-    };
-
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, [images]);
+    return () => ctx.revert();
+  }, []);
 
   return (
-    <section ref={containerRef} className="relative w-full h-screen overflow-hidden bg-black">
-      <canvas
-        ref={canvasRef}
-        className="absolute inset-0 w-full h-full object-cover opacity-60"
-      />
+    <section
+      ref={sectionRef}
+      className="relative w-full h-[100vh] min-h-[700px] flex items-center justify-center overflow-hidden bg-black"
+    >
+      {/* Background with Zoom/Parallax */}
+      <div
+        ref={bgRef}
+        className="absolute inset-0 w-full h-full"
+      >
+        <div className="absolute inset-0 bg-black/40 z-10" />
+        <Image
+          src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=2070&auto=format&fit=crop"
+          alt="Premium Interior"
+          fill
+          priority
+          className="w-full h-full object-cover"
+        />
+      </div>
 
-      {/* Overlay Content */}
-      <div className="relative z-10 h-full flex flex-col items-center justify-center text-center px-4 text-white">
-        <h1 className="text-4xl md:text-7xl font-bold mb-6 tracking-tight">
-          Натяжные потолки <br />
-          <span className="text-accent">под ключ за 1 день</span>
-        </h1>
-        <p className="text-xl md:text-2xl mb-8 max-w-2xl text-gray-200">
-          Чистый монтаж • гарантия • без пыли
-        </p>
-        <div className="flex flex-col sm:flex-row gap-4">
-          <button className="bg-accent hover:bg-blue-700 text-white px-8 py-4 rounded-full text-lg font-semibold transition-all transform hover:scale-105">
-            Рассчитать стоимость
-          </button>
-          <button className="bg-white/10 hover:bg-white/20 backdrop-blur-md text-white border border-white/30 px-8 py-4 rounded-full text-lg font-semibold transition-all">
-            Наши работы
-          </button>
+      {/* Content */}
+      <div className="relative z-20 container mx-auto px-6 text-center text-white">
+        <div className="max-w-4xl mx-auto">
+          <h1
+            ref={titleRef}
+            className="text-5xl md:text-8xl font-bold mb-8 leading-[1.1] tracking-tight"
+          >
+            Натяжные потолки <br />
+            <span className="text-white/90 font-medium">нового поколения</span>
+          </h1>
+
+          <p
+            ref={subtitleRef}
+            className="text-lg md:text-2xl text-white/80 mb-12 max-w-2xl mx-auto leading-relaxed"
+          >
+            Создаем безупречные интерьеры в Москве и МО. <br className="hidden md:block" />
+            Чистый монтаж, премиальные материалы, гарантия 15 лет.
+          </p>
+
+          <div
+            ref={ctaRef}
+            className="flex flex-col sm:flex-row items-center justify-center gap-5"
+          >
+            <button className="w-full sm:w-auto bg-accent hover:bg-accent-dark text-white px-10 py-5 rounded-full text-lg font-bold transition-all transform hover:scale-[1.02] active:scale-[0.98]">
+              Рассчитать стоимость
+            </button>
+            <button className="w-full sm:w-auto bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/30 text-white px-10 py-5 rounded-full text-lg font-semibold transition-all">
+              Посмотреть работы
+            </button>
+          </div>
         </div>
       </div>
 
       {/* Scroll Indicator */}
-      <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2 text-white/50 animate-bounce">
-        <span className="text-sm uppercase tracking-widest">Листайте вниз</span>
-        <div className="w-px h-12 bg-gradient-to-b from-white/50 to-transparent" />
+      <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-3">
+        <span className="text-white/40 text-[10px] uppercase tracking-[0.2em] font-bold">Scroll to explore</span>
+        <div className="w-px h-10 bg-gradient-to-b from-white/50 to-transparent" />
       </div>
     </section>
   );

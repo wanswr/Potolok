@@ -1,14 +1,16 @@
 @import "tailwindcss";
 
 @theme {
-  --color-background: #F8F9FA;
+  --color-background: #FFFFFF;
   --color-foreground: #1A1A1A;
-  --color-accent: #0056B3; /* Blue accent */
-  --color-accent-gold: #D4AF37; /* Gold accent */
+  --color-accent: #0066FF;
+  --color-accent-dark: #0052CC;
+  --color-gray-soft: #F5F5F7;
+  --color-gray-border: #E5E5E7;
 }
 
 :root {
-  --background: #F8F9FA;
+  --background: #FFFFFF;
   --foreground: #1A1A1A;
 }
 
@@ -19,9 +21,9 @@ body {
 
 .glass-morphism {
   background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .section-padding {
@@ -31,7 +33,25 @@ body {
 
 @media (min-width: 768px) {
   .section-padding {
-    padding-top: 8rem;
-    padding-bottom: 8rem;
+    padding-top: 10rem;
+    padding-bottom: 10rem;
   }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
 }

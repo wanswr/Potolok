@@ -3,7 +3,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Star } from 'lucide-react';
-import Image from 'next/image';
 
 const testimonials = [
   {
@@ -28,7 +27,7 @@ const testimonials = [
 
 export const SocialProof = () => {
   return (
-    <section className="section-padding bg-white">
+    <section id="reviews" className="section-padding bg-white">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-5xl font-bold mb-4">Отзывы клиентов</h2>
@@ -57,7 +56,7 @@ export const SocialProof = () => {
                   ))}
                 </div>
                 <p className="text-gray-700 italic mb-6 leading-relaxed">
-                  "{item.text}"
+                  &ldquo;{item.text}&rdquo;
                 </p>
               </div>
               <div>

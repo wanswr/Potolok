@@ -1,135 +1,183 @@
 'use client';
 
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import { Phone, Clock, Send } from 'lucide-react';
+import { Phone, Clock, ShieldCheck, CheckCircle2 } from 'lucide-react';
 
 export const FinalCTA = () => {
-  const [formStatus, setFormStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [formData, setFormData] = useState({ name: '', phone: '' });
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setFormStatus('loading');
-
-    // Simulate API call
-    const formData = new FormData(e.currentTarget);
-    const data = {
-      name: formData.get('name'),
-      phone: formData.get('phone'),
-    };
+    setStatus('loading');
 
     try {
-      const res = await fetch('/api/contact', {
+      const response = await fetch('/api/contact', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          ...formData,
+          source: 'Final CTA Form'
+        }),
       });
 
-      if (res.ok) {
-        setFormStatus('success');
+      if (response.ok) {
+        setStatus('success');
+        setFormData({ name: '', phone: '' });
       } else {
-        setFormStatus('error');
+        setStatus('error');
       }
-    } catch (err) {
-      setFormStatus('error');
+    } catch (error) {
+      console.error('Submit error:', error);
+      setStatus('error');
     }
   };
 
   return (
-    <section className="section-padding bg-[#1A1A1A] text-white overflow-hidden relative">
-      {/* Abstract Background Decoration */}
-      <div className="absolute top-0 right-0 w-1/2 h-full bg-accent/10 blur-[120px] rounded-full translate-x-1/2" />
+    <section id="contacts" className="section-padding bg-black text-white relative overflow-hidden">
+      {/* Decorative background */}
+      <div className="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-accent/10 to-transparent pointer-events-none" />
 
-      <div className="container mx-auto px-4 relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+      <div className="container mx-auto px-6 relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+
+          {/* Content Side */}
           <div>
-            <h2 className="text-4xl md:text-6xl font-bold mb-8 leading-tight">
-              Замер бесплатно <br />
-              <span className="text-accent">уже сегодня</span>
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent/20 border border-accent/30 text-accent text-sm font-bold mb-8">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-accent"></span>
+              </span>
+              Акция: Замер бесплатно сегодня
+            </div>
+
+            <h2 className="text-5xl md:text-7xl font-bold tracking-tight mb-10 leading-[1.1]">
+              Готовы преобразить <br />
+              <span className="text-accent">ваш интерьер?</span>
             </h2>
 
-            <div className="space-y-6 mb-12">
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center">
-                  <Clock className="w-6 h-6 text-accent" />
+            <div className="space-y-8 mb-12">
+              <div className="flex items-center gap-6">
+                <div className="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-accent">
+                  <Clock size={28} />
                 </div>
                 <div>
-                  <div className="font-bold">Выезд за 2 часа</div>
-                  <div className="text-gray-400">Приедем в любой район Москвы</div>
+                  <h4 className="text-xl font-bold">Выезд за 2 часа</h4>
+                  <p className="text-white/50">Приедем в любой район Москвы и области</p>
                 </div>
               </div>
 
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center">
-                  <Phone className="w-6 h-6 text-accent" />
+              <div className="flex items-center gap-6">
+                <div className="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-accent">
+                  <Phone size={28} />
                 </div>
                 <div>
-                  <div className="font-bold">+7 (999) 000-00-00</div>
-                  <div className="text-gray-400">Ежедневно с 9:00 до 21:00</div>
+                  <h4 className="text-xl font-bold">+7 (999) 000-00-00</h4>
+                  <p className="text-white/50">Ежедневно с 9:00 до 21:00</p>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-6">
+                <div className="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-accent">
+                  <ShieldCheck size={28} />
+                </div>
+                <div>
+                  <h4 className="text-xl font-bold">Гарантия 15 лет</h4>
+                  <p className="text-white/50">Зафиксировано в официальном договоре</p>
                 </div>
               </div>
             </div>
 
-            <div className="inline-block p-4 rounded-2xl bg-white/5 border border-white/10">
-              <div className="text-sm text-gray-400 mb-1">Осталось мест на сегодня:</div>
-              <div className="text-2xl font-bold text-accent-gold">3 свободных окна</div>
+            <div className="p-6 rounded-3xl bg-white/5 border border-white/10 inline-block">
+              <div className="text-sm text-white/40 mb-2 uppercase tracking-widest font-bold">Осталось мест на сегодня:</div>
+              <div className="text-3xl font-bold text-accent">3 свободных окна</div>
             </div>
           </div>
 
-          <div className="bg-white rounded-3xl p-8 md:p-10 text-gray-900 shadow-2xl">
-            {formStatus === 'success' ? (
-              <div className="text-center py-12">
-                <div className="w-20 h-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <Send className="w-10 h-10" />
+          {/* Form Side */}
+          <div className="bg-white rounded-[48px] p-10 md:p-16 text-black">
+            {status === 'success' ? (
+              <div className="text-center py-10">
+                <div className="w-24 h-24 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-8">
+                  <CheckCircle2 size={48} />
                 </div>
-                <h3 className="text-2xl font-bold mb-4">Спасибо!</h3>
-                <p className="text-gray-600">Мы перезвоним вам в течение 15 минут.</p>
+                <h3 className="text-3xl font-bold mb-4">Спасибо!</h3>
+                <p className="text-black/50 text-lg leading-relaxed mb-8">
+                  Мы получили вашу заявку и перезвоним вам в течение 15 минут.
+                </p>
                 <button
-                  onClick={() => setFormStatus('idle')}
-                  className="mt-8 text-accent font-semibold"
+                  onClick={() => setStatus('idle')}
+                  className="text-accent font-bold hover:underline"
                 >
                   Отправить еще раз
                 </button>
               </div>
+            ) : status === 'error' ? (
+              <div className="text-center py-10">
+                <div className="w-24 h-24 bg-red-100 text-red-600 rounded-full flex items-center justify-center mx-auto mb-8">
+                  <span className="text-4xl font-bold">!</span>
+                </div>
+                <h3 className="text-3xl font-bold mb-4">Ошибка</h3>
+                <p className="text-black/50 text-lg leading-relaxed mb-8">
+                  Что-то пошло не так. Пожалуйста, попробуйте позже или позвоните нам.
+                </p>
+                <button
+                  onClick={() => setStatus('idle')}
+                  className="text-accent font-bold hover:underline"
+                >
+                  Попробовать снова
+                </button>
+              </div>
             ) : (
               <>
-                <h3 className="text-2xl font-bold mb-2">Оставьте заявку</h3>
-                <p className="text-gray-500 mb-8">И получите скидку 10% на первое полотно</p>
+                <h3 className="text-3xl md:text-4xl font-bold mb-4">Оставьте заявку</h3>
+                <p className="text-black/50 text-lg mb-10">
+                  И получите скидку 10% на первое полотно
+                </p>
 
-                <form onSubmit={handleSubmit} className="space-y-4">
+                <form onSubmit={handleSubmit} className="space-y-6">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Ваше имя</label>
+                    <label className="text-sm font-bold text-black/40 uppercase tracking-wider block mb-3 ml-2">Ваше имя</label>
                     <input
-                      name="name"
-                      required
                       type="text"
-                      placeholder="Иван"
-                      className="w-full px-4 py-4 rounded-xl bg-gray-50 border border-gray-200 focus:outline-none focus:ring-2 focus:ring-accent transition-all"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Телефон</label>
-                    <input
-                      name="phone"
                       required
-                      type="tel"
-                      placeholder="+7 (___) ___-__-__"
-                      className="w-full px-4 py-4 rounded-xl bg-gray-50 border border-gray-200 focus:outline-none focus:ring-2 focus:ring-accent transition-all"
+                      placeholder="Иван Иванов"
+                      className="w-full px-8 py-5 rounded-3xl bg-gray-soft border border-gray-border focus:border-accent focus:ring-4 focus:ring-accent/10 outline-none transition-all text-lg"
+                      value={formData.name}
+                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                     />
                   </div>
+
+                  <div>
+                    <label className="text-sm font-bold text-black/40 uppercase tracking-wider block mb-3 ml-2">Телефон</label>
+                    <input
+                      type="tel"
+                      required
+                      placeholder="+7 (999) 000-00-00"
+                      className="w-full px-8 py-5 rounded-3xl bg-gray-soft border border-gray-border focus:border-accent focus:ring-4 focus:ring-accent/10 outline-none transition-all text-lg font-mono"
+                      value={formData.phone}
+                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                    />
+                  </div>
+
                   <button
-                    disabled={formStatus === 'loading'}
-                    className="w-full bg-accent hover:bg-blue-700 text-white py-5 rounded-xl font-bold text-lg transition-all flex items-center justify-center gap-2"
+                    disabled={status === 'loading'}
+                    className="w-full bg-accent hover:bg-accent-dark text-white py-6 rounded-3xl text-xl font-bold transition-all transform hover:scale-[1.02] active:scale-[0.98] shadow-xl shadow-accent/20 disabled:opacity-50 disabled:scale-100"
                   >
-                    {formStatus === 'loading' ? 'Отправка...' : 'Перезвоните мне'}
+                    {status === 'loading' ? 'Отправка...' : 'Перезвоните мне'}
                   </button>
-                  <p className="text-[10px] text-gray-400 text-center">
+
+                  <p className="text-center text-xs text-black/30 mt-6 leading-relaxed">
                     Нажимая кнопку, вы соглашаетесь на обработку персональных данных
+                    и принимаете <a href="#" className="underline">условия политики конфиденциальности</a>.
                   </p>
                 </form>
               </>
             )}
           </div>
+
         </div>
       </div>
     </section>

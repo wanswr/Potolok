@@ -1,113 +1,80 @@
 'use client';
 
-import React, { useState, useRef, useEffect } from 'react';
+import React from 'react';
 import Image from 'next/image';
 
-const portfolioItems = [
+const projects = [
   {
-    id: 1,
-    title: 'Гостиная в современном стиле',
-    before: 'https://images.unsplash.com/photo-1581858726788-75bc0f6a952d?auto=format&fit=crop&w=1200&q=80',
-    after: 'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1200&q=80',
+    title: 'Минимализм в ЖК "Сити"',
+    type: 'Световые линии',
+    image: 'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?q=80&w=1974&auto=format&fit=crop',
+    size: 'large',
+  },
+  {
+    title: 'Уютная спальня',
+    type: 'Сатиновый потолок',
+    image: 'https://images.unsplash.com/photo-1616046229478-9901c5536a45?q=80&w=2080&auto=format&fit=crop',
+    size: 'small',
+  },
+  {
+    title: 'Современная кухня',
+    type: 'Теневой профиль',
+    image: 'https://images.unsplash.com/photo-1556912167-7502019904a0?q=80&w=2070&auto=format&fit=crop',
+    size: 'small',
+  },
+  {
+    title: 'Парящий потолок в гостиной',
+    type: 'Контурная подсветка',
+    image: 'https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?q=80&w=2070&auto=format&fit=crop',
+    size: 'large',
   },
 ];
 
 export const Portfolio = () => {
-  const [sliderPos, setSliderPos] = useState(50);
-  const [isResizing, setIsResizing] = useState(false);
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  const handleMove = (e: React.MouseEvent | React.TouchEvent) => {
-    if (!isResizing || !containerRef.current) return;
-
-    const rect = containerRef.current.getBoundingClientRect();
-    const x = 'touches' in e ? e.touches[0].pageX - rect.left : (e as React.MouseEvent).pageX - rect.left;
-    const position = Math.max(0, Math.min(100, (x / rect.width) * 100));
-    setSliderPos(position);
-  };
-
-  useEffect(() => {
-    const handleMouseUp = () => setIsResizing(false);
-    window.addEventListener('mouseup', handleMouseUp);
-    window.addEventListener('touchend', handleMouseUp);
-    return () => {
-      window.removeEventListener('mouseup', handleMouseUp);
-      window.removeEventListener('touchend', handleMouseUp);
-    };
-  }, []);
-
   return (
-    <section className="section-padding bg-[#F8F9FA]">
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-5xl font-bold mb-4">Наши работы</h2>
-          <p className="text-gray-600 text-lg max-w-2xl mx-auto">
-            Посмотрите на преображение интерьеров после установки наших потолков.
+    <section id="portfolio" className="section-padding bg-gray-soft">
+      <div className="container mx-auto px-6">
+        <div className="max-w-3xl mb-20">
+          <h2 className="text-4xl md:text-6xl font-bold tracking-tight mb-8">
+            Наши <br />
+            <span className="text-accent">работы</span>
+          </h2>
+          <p className="text-xl text-black/60 leading-relaxed">
+            Реализованные проекты, которыми мы гордимся.
+            Каждый объект — это сочетание стиля, качества и внимания к деталям.
           </p>
         </div>
 
-        <div className="max-w-5xl mx-auto">
-          <div
-            ref={containerRef}
-            className="relative aspect-video rounded-3xl overflow-hidden cursor-ew-resize select-none border-4 border-white shadow-2xl"
-            onMouseMove={handleMove}
-            onTouchMove={handleMove}
-            onMouseDown={() => setIsResizing(true)}
-            onTouchStart={() => setIsResizing(true)}
-          >
-            {/* After Image (Full width background) */}
-            <Image
-              src={portfolioItems[0].after}
-              alt="После"
-              fill
-              className="object-cover"
-              draggable={false}
-            />
-            <div className="absolute top-4 right-6 bg-accent text-white px-4 py-1 rounded-full text-sm font-bold z-10">
-              ПОСЛЕ
-            </div>
-
-            {/* Before Image (Clipped) */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {projects.map((project, index) => (
             <div
-              className="absolute top-0 left-0 bottom-0 overflow-hidden"
-              style={{ width: `${sliderPos}%` }}
+              key={index}
+              className={`group relative rounded-[48px] overflow-hidden bg-white shadow-sm transition-all duration-700 h-[600px]`}
             >
-              <div className="relative w-[100vw] max-w-[1024px] aspect-video">
-                <Image
-                  src={portfolioItems[0].before}
-                  alt="До"
-                  fill
-                  className="object-cover"
-                  draggable={false}
-                />
-              </div>
-              <div className="absolute top-4 left-6 bg-black/50 text-white px-4 py-1 rounded-full text-sm font-bold z-10">
-                ДО
+              <Image
+                src={project.image}
+                alt={project.title}
+                fill
+                sizes="(max-width: 768px) 100vw, 50vw"
+                className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent" />
+
+              <div className="absolute inset-0 p-10 flex flex-col justify-end text-white">
+                <div className="text-accent font-bold mb-2 uppercase tracking-widest text-sm">{project.type}</div>
+                <h3 className="text-3xl font-bold mb-6">{project.title}</h3>
+                <button className="bg-white/10 backdrop-blur-md border border-white/20 text-white px-8 py-4 rounded-full font-bold opacity-0 group-hover:opacity-100 transition-all transform translate-y-4 group-hover:translate-y-0 w-fit">
+                  Подробнее о проекте
+                </button>
               </div>
             </div>
+          ))}
+        </div>
 
-            {/* Slider Handle */}
-            <div
-              className="absolute top-0 bottom-0 w-1 bg-white cursor-ew-resize z-20"
-              style={{ left: `${sliderPos}%` }}
-            >
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 bg-white rounded-full shadow-xl flex items-center justify-center">
-                <div className="flex gap-1">
-                  <div className="w-1 h-4 bg-gray-300 rounded-full" />
-                  <div className="w-1 h-4 bg-gray-300 rounded-full" />
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="mt-12 grid grid-cols-2 md:grid-cols-4 gap-4">
-             {/* Small thumbnails placeholders */}
-             {[1,2,3,4].map(i => (
-                <div key={i} className="aspect-square relative rounded-2xl overflow-hidden opacity-60 hover:opacity-100 transition-opacity cursor-pointer">
-                    <Image src={`https://picsum.photos/id/${20+i}/400/400`} alt="Portfolio" fill className="object-cover" />
-                </div>
-             ))}
-          </div>
+        <div className="mt-16 text-center">
+          <button className="bg-white border border-gray-border px-12 py-5 rounded-full text-lg font-bold hover:bg-black hover:text-white transition-all">
+            Смотреть всё портфолио
+          </button>
         </div>
       </div>
     </section>

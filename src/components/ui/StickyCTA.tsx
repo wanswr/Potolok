@@ -1,46 +1,45 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Phone, MessageCircle } from 'lucide-react';
-import { cn } from '@/lib/utils';
 
 export const StickyCTA = () => {
-  const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      // Show after scrolling past hero (100vh)
-      if (window.scrollY > window.innerHeight) {
-        setIsVisible(true);
-      } else {
-        setIsVisible(false);
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
   return (
-    <div
-      className={cn(
-        "fixed bottom-6 right-6 z-50 flex flex-col gap-3 transition-all duration-500 transform",
-        isVisible ? "translate-y-0 opacity-100" : "translate-y-20 opacity-0"
-      )}
-    >
-      <a
-        href="https://wa.me/79990000000"
-        target="_blank"
-        className="w-14 h-14 bg-green-500 text-white rounded-full flex items-center justify-center shadow-2xl hover:scale-110 transition-transform"
-      >
-        <MessageCircle className="w-7 h-7" />
-      </a>
-      <a
-        href="tel:+79990000000"
-        className="w-14 h-14 bg-accent text-white rounded-full flex items-center justify-center shadow-2xl hover:scale-110 transition-transform"
-      >
-        <Phone className="w-7 h-7" />
-      </a>
-    </div>
+    <>
+      {/* Desktop Sticky Phone */}
+      <div className="fixed bottom-10 right-10 z-[40] hidden md:flex flex-col gap-4">
+        <a
+          href="https://wa.me/79990000000"
+          className="w-16 h-16 bg-[#25D366] text-white rounded-full flex items-center justify-center shadow-2xl hover:scale-110 transition-transform"
+          aria-label="WhatsApp"
+        >
+          <MessageCircle size={32} />
+        </a>
+        <a
+          href="tel:+79990000000"
+          className="w-16 h-16 bg-accent text-white rounded-full flex items-center justify-center shadow-2xl hover:scale-110 transition-transform"
+          aria-label="Call us"
+        >
+          <Phone size={32} />
+        </a>
+      </div>
+
+      {/* Mobile Sticky CTA Bar */}
+      <div className="fixed bottom-0 left-0 w-full z-[40] md:hidden glass-morphism border-t border-black/5 p-4 flex gap-4">
+        <a
+          href="tel:+79990000000"
+          className="flex-1 bg-black text-white h-14 rounded-2xl flex items-center justify-center gap-3 font-bold"
+        >
+          <Phone size={20} />
+          Позвонить
+        </a>
+        <button
+          onClick={() => document.getElementById('calculator')?.scrollIntoView({ behavior: 'smooth' })}
+          className="flex-1 bg-accent text-white h-14 rounded-2xl flex items-center justify-center gap-3 font-bold shadow-lg shadow-accent/20"
+        >
+          Расчёт цены
+        </button>
+      </div>
+    </>
   );
 };

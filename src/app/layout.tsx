@@ -2,11 +2,15 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 
-const inter = Inter({ subsets: ["latin", "cyrillic"] });
+const inter = Inter({
+  subsets: ["latin", "cyrillic"],
+  display: 'swap',
+  variable: '--font-inter',
+});
 
 export const metadata: Metadata = {
-  title: "Натяжные потолки под ключ в Москве | Гарантия 10 лет",
-  description: "Премиальные натяжные потолки за 1 день. Чистый монтаж, без пыли, гарантия качества. Рассчитайте стоимость онлайн!",
+  title: "PotolokBel | Премиальные натяжные потолки в Москве и МО",
+  description: "Профессиональная установка натяжных потолков под ключ. Гарантия 15 лет, чистый монтаж за 1 день. Бесплатный замер по Москве и области.",
 };
 
 export default function RootLayout({
@@ -16,7 +20,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ru" className="scroll-smooth">
-      <body className={`${inter.className} antialiased bg-[#F8F9FA] text-[#1A1A1A]`}>
+      <body className={`${inter.variable} font-sans antialiased bg-white text-[#1A1A1A]`}>
         {children}
       </body>
     </html>
