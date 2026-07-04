@@ -1,7 +1,8 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Phone, Clock, ShieldCheck, CheckCircle2 } from 'lucide-react';
+import gsap from 'gsap';
 
 export const FinalCTA = () => {
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
@@ -35,16 +36,60 @@ export const FinalCTA = () => {
     }
   };
 
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const formRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      // Reveal Side Content
+      gsap.from('.cta-content-side > *', {
+        x: -50,
+        opacity: 0,
+        duration: 1.2,
+        stagger: 0.15,
+        ease: 'power4.out',
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: 'top 70%',
+        }
+      });
+
+      // Reveal Form
+      gsap.from(formRef.current, {
+        x: 50,
+        opacity: 0,
+        scale: 0.95,
+        duration: 1.5,
+        ease: 'power4.out',
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: 'top 70%',
+        }
+      });
+
+      // Background Light Movement
+      gsap.to('.cta-glow', {
+        x: '30%',
+        y: '-20%',
+        duration: 8,
+        repeat: -1,
+        yoyo: true,
+        ease: 'sine.inOut'
+      });
+    });
+    return () => ctx.revert();
+  }, []);
+
   return (
-    <section id="contacts" className="section-padding bg-black text-white relative overflow-hidden">
+    <section id="contacts" ref={sectionRef} className="section-padding bg-black text-white relative overflow-hidden rounded-t-[60px] -mt-20">
       {/* Decorative background */}
-      <div className="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-accent/10 to-transparent pointer-events-none" />
+      <div className="cta-glow absolute bottom-0 left-0 w-full h-full bg-gradient-to-tr from-accent/20 via-transparent to-transparent pointer-events-none blur-[120px] opacity-50" />
 
       <div className="container mx-auto px-6 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
 
           {/* Content Side */}
-          <div>
+          <div className="cta-content-side">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent/20 border border-accent/30 text-accent text-sm font-bold mb-8">
               <span className="relative flex h-2 w-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-75"></span>
@@ -97,7 +142,7 @@ export const FinalCTA = () => {
           </div>
 
           {/* Form Side */}
-          <div className="bg-white rounded-[48px] p-10 md:p-16 text-black">
+          <div ref={formRef} className="bg-white rounded-[48px] p-10 md:p-16 text-black relative shadow-2xl shadow-accent/10">
             {status === 'success' ? (
               <div className="text-center py-10">
                 <div className="w-24 h-24 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-8">

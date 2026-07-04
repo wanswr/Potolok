@@ -12,17 +12,21 @@ import { StickyCTA } from '@/components/ui/StickyCTA';
 
 export default function Home() {
   return (
-    <main className="min-h-screen">
+    <main className="min-h-screen bg-black">
       <Header />
-      <Hero />
-      <TrustBlock />
+      <div id="smooth-wrapper">
+        <div id="smooth-content">
+          <Hero />
+          <TrustBlock />
       <CeilingTypes />
       <Calculator />
       <Portfolio />
       <Timeline />
       <SocialProof />
       <FAQ />
-      <FinalCTA />
+          <FinalCTA />
+        </div>
+      </div>
       <StickyCTA />
 
       <footer className="bg-[#111111] py-20 border-t border-white/5">

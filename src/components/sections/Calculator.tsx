@@ -19,6 +19,33 @@ export const Calculator = () => {
   const [total, setTotal] = useState(0);
 
   const displayTotalRef = useRef<HTMLSpanElement>(null);
+  const sectionRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.from('.calc-card', {
+        y: 100,
+        opacity: 0,
+        duration: 1.2,
+        ease: 'expo.out',
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: 'top 80%',
+        }
+      });
+
+      // Background glow pulse
+      gsap.to('.calc-glow', {
+        opacity: 0.4,
+        scale: 1.2,
+        duration: 3,
+        repeat: -1,
+        yoyo: true,
+        ease: 'sine.inOut'
+      });
+    });
+    return () => ctx.revert();
+  }, []);
 
   useEffect(() => {
     const basePrice = (ceilingPrices[type] || 500) * area;
@@ -41,9 +68,9 @@ export const Calculator = () => {
   }, [area, type, lights, corners, total]);
 
   return (
-    <section id="calculator" className="section-padding bg-white">
+    <section id="calculator" ref={sectionRef} className="section-padding bg-white relative z-10 rounded-t-[60px] -mt-20">
       <div className="container mx-auto px-6">
-        <div className="max-w-6xl mx-auto">
+        <div className="max-w-6xl mx-auto calc-card">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
 
             {/* Form Side */}
@@ -166,7 +193,7 @@ export const Calculator = () => {
               </div>
 
               {/* Decorative background element */}
-              <div className="absolute top-0 right-0 w-64 h-64 bg-accent/20 blur-[120px] rounded-full -mr-20 -mt-20" />
+              <div className="calc-glow absolute top-0 right-0 w-64 h-64 bg-accent/20 blur-[120px] rounded-full -mr-20 -mt-20" />
             </div>
 
           </div>

@@ -38,32 +38,66 @@ const benefits = [
 export const TrustBlock = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<HTMLDivElement>(null);
+  const titleRef = useRef<HTMLHeadingElement>(null);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
+      // Reveal Title & Subtitle
+      gsap.from([titleRef.current, titleRef.current?.nextElementSibling], {
+        y: 40,
+        opacity: 0,
+        duration: 1.2,
+        stagger: 0.2,
+        ease: 'power4.out',
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: 'top 80%',
+        }
+      });
+
+      // Cards Animation
       if (cardsRef.current) {
         gsap.from(cardsRef.current.children, {
-          y: 60,
+          y: 100,
           opacity: 0,
-          duration: 1,
-          stagger: 0.15,
-          ease: 'power3.out',
+          rotationX: -15,
+          scale: 0.9,
+          duration: 1.2,
+          stagger: 0.1,
+          ease: 'expo.out',
           scrollTrigger: {
             trigger: cardsRef.current,
             start: 'top 85%',
           }
         });
       }
+
+      // Parallax effect on the whole section
+      gsap.fromTo(sectionRef.current,
+        { y: 100, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 1.5,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: 'top bottom',
+            end: 'top top',
+            scrub: true,
+          }
+        }
+      );
     });
 
     return () => ctx.revert();
   }, []);
 
   return (
-    <section id="features" ref={sectionRef} className="section-padding bg-white overflow-hidden">
+    <section id="features" ref={sectionRef} className="section-padding bg-white overflow-hidden rounded-t-[60px] relative z-20 -mt-20">
       <div className="container mx-auto px-6">
         <div className="max-w-3xl mb-20">
-          <h2 className="text-4xl md:text-6xl font-bold tracking-tight mb-8">
+          <h2 ref={titleRef} className="text-4xl md:text-6xl font-bold tracking-tight mb-8">
             Почему выбирают <br />
             <span className="text-accent">PotolokBel</span>
           </h2>
@@ -76,14 +110,15 @@ export const TrustBlock = () => {
         <div
           ref={cardsRef}
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+          style={{ perspective: '1000px' }}
         >
           {benefits.map((benefit, index) => (
             <div
               key={index}
-              className="group p-8 rounded-[32px] bg-gray-soft border border-gray-border hover:bg-white hover:shadow-2xl hover:shadow-black/5 transition-all duration-500"
+              className="group p-8 rounded-[32px] bg-gray-soft border border-gray-border hover:bg-white hover:shadow-2xl hover:shadow-black/10 transition-all duration-500 hover:-translate-y-4 hover:rotate-1"
             >
-              <div className="w-14 h-14 rounded-2xl bg-white flex items-center justify-center mb-8 shadow-sm group-hover:scale-110 transition-transform duration-500">
-                <benefit.icon className="w-7 h-7 text-accent" />
+              <div className="w-14 h-14 rounded-2xl bg-white flex items-center justify-center mb-8 shadow-sm group-hover:scale-110 group-hover:bg-accent group-hover:text-white transition-all duration-500">
+                <benefit.icon className="w-7 h-7 text-accent group-hover:text-white transition-colors" />
               </div>
               <h3 className="text-2xl font-bold mb-4">{benefit.title}</h3>
               <p className="text-black/50 leading-relaxed text-[15px]">

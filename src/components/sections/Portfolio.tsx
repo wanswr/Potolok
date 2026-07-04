@@ -1,7 +1,11 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import Image from 'next/image';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
 
 const projects = [
   {
@@ -31,10 +35,45 @@ const projects = [
 ];
 
 export const Portfolio = () => {
+  const sectionRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      // Parallax for each image
+      gsap.utils.toArray<HTMLElement>('.portfolio-item').forEach((item) => {
+        const image = item.querySelector('img');
+        gsap.to(image, {
+          yPercent: 15,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: item,
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: true,
+          }
+        });
+      });
+
+      // Section Entrance
+      gsap.from('.portfolio-header > *', {
+        y: 40,
+        opacity: 0,
+        duration: 1.2,
+        stagger: 0.2,
+        ease: 'power4.out',
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: 'top 80%',
+        }
+      });
+    });
+    return () => ctx.revert();
+  }, []);
+
   return (
-    <section id="portfolio" className="section-padding bg-gray-soft">
+    <section id="portfolio" ref={sectionRef} className="section-padding bg-gray-soft relative z-10 rounded-t-[60px] -mt-20">
       <div className="container mx-auto px-6">
-        <div className="max-w-3xl mb-20">
+        <div className="portfolio-header max-w-3xl mb-20">
           <h2 className="text-4xl md:text-6xl font-bold tracking-tight mb-8">
             Наши <br />
             <span className="text-accent">работы</span>
@@ -49,7 +88,7 @@ export const Portfolio = () => {
           {projects.map((project, index) => (
             <div
               key={index}
-              className={`group relative rounded-[48px] overflow-hidden bg-white shadow-sm transition-all duration-700 h-[600px]`}
+              className={`portfolio-item group relative rounded-[48px] overflow-hidden bg-white shadow-sm transition-all duration-700 h-[600px]`}
             >
               <Image
                 src={project.image}

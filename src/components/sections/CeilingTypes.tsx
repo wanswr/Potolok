@@ -42,28 +42,105 @@ const ceilingTypes = [
 export const CeilingTypes = () => {
   const containerRef = useRef<HTMLDivElement>(null);
 
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>, card: HTMLDivElement) => {
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+
+    const rotateX = (y - centerY) / 20;
+    const rotateY = (centerX - x) / 20;
+
+    gsap.to(card, {
+      rotateX: rotateX,
+      rotateY: rotateY,
+      duration: 0.5,
+      ease: 'power2.out',
+    });
+
+    const img = card.querySelector('img');
+    if (img) {
+      gsap.to(img, {
+        x: (x - centerX) / 10,
+        y: (y - centerY) / 10,
+        duration: 0.5,
+        ease: 'power2.out',
+      });
+    }
+  };
+
+  const handleMouseLeave = (card: HTMLDivElement) => {
+    gsap.to(card, {
+      rotateX: 0,
+      rotateY: 0,
+      duration: 0.5,
+      ease: 'power2.out',
+    });
+    const img = card.querySelector('img');
+    if (img) {
+      gsap.to(img, {
+        x: 0,
+        y: 0,
+        duration: 0.5,
+        ease: 'power2.out',
+      });
+    }
+  };
+
   useEffect(() => {
     const ctx = gsap.context(() => {
-      gsap.from('.ceiling-card', {
-        y: 80,
+      // Reveal Title Block
+      gsap.from('.types-header > *', {
+        y: 40,
         opacity: 0,
-        duration: 1,
+        duration: 1.2,
         stagger: 0.2,
-        ease: 'power3.out',
+        ease: 'power4.out',
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: 'top 80%',
+        }
+      });
+
+      // Ceiling Cards with staggered lift and subtle rotation
+      gsap.from('.ceiling-card', {
+        y: 100,
+        rotationX: -10,
+        scale: 0.95,
+        opacity: 0,
+        duration: 1.2,
+        stagger: 0.15,
+        ease: 'expo.out',
         scrollTrigger: {
           trigger: containerRef.current,
           start: 'top 75%',
         }
       });
+
+      // Section Entrance Parallax
+      gsap.fromTo(containerRef.current,
+        { y: 150 },
+        {
+          y: 0,
+          scrollTrigger: {
+            trigger: containerRef.current,
+            start: 'top bottom',
+            end: 'top top',
+            scrub: true,
+          }
+        }
+      );
     });
 
     return () => ctx.revert();
   }, []);
 
   return (
-    <section id="types" ref={containerRef} className="section-padding bg-gray-soft">
+    <section id="types" ref={containerRef} className="section-padding bg-gray-soft relative z-10 rounded-t-[60px] -mt-20">
       <div className="container mx-auto px-6">
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-20 gap-8">
+        <div className="types-header flex flex-col md:flex-row md:items-end justify-between mb-20 gap-8">
           <div className="max-w-2xl">
             <h2 className="text-4xl md:text-6xl font-bold tracking-tight mb-8">
               Виды <br />
@@ -82,11 +159,13 @@ export const CeilingTypes = () => {
           </button>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8" style={{ perspective: '1200px' }}>
           {ceilingTypes.map((type, index) => (
             <div
               key={index}
-              className="ceiling-card group relative h-[500px] md:h-[600px] rounded-[40px] overflow-hidden bg-white border border-black/5"
+              onMouseMove={(e) => handleMouseMove(e, e.currentTarget)}
+              onMouseLeave={(e) => handleMouseLeave(e.currentTarget)}
+              className="ceiling-card group relative h-[500px] md:h-[600px] rounded-[40px] overflow-hidden bg-white border border-black/5 cursor-pointer will-change-transform"
             >
               {/* Image */}
               <div className="absolute inset-0 overflow-hidden">

@@ -35,28 +35,45 @@ export const Timeline = () => {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
+      // Progress Line Animation
       gsap.to(progressRef.current, {
         height: '100%',
         ease: 'none',
         scrollTrigger: {
           trigger: containerRef.current,
-          start: 'top 60%',
-          end: 'bottom 60%',
+          start: 'top 50%',
+          end: 'bottom 50%',
           scrub: true,
         },
       });
 
-      // Animate steps
-      gsap.utils.toArray<HTMLElement>('.timeline-step').forEach((step) => {
-        gsap.from(step, {
-          x: -20,
-          opacity: 0,
-          duration: 1,
+      // Animate steps and circles
+      const stepsElements = gsap.utils.toArray<HTMLElement>('.timeline-step');
+      stepsElements.forEach((step, index) => {
+        const circle = step.querySelector('.step-circle');
+        const content = step.querySelector('.step-content');
+
+        const tl = gsap.timeline({
           scrollTrigger: {
             trigger: step,
-            start: 'top 80%',
-          },
+            start: 'top 60%',
+            toggleActions: 'play none none reverse',
+          }
         });
+
+        tl.to(circle, {
+          backgroundColor: '#0066FF',
+          borderColor: '#0066FF',
+          color: '#FFFFFF',
+          scale: 1.2,
+          duration: 0.5,
+        })
+        .from(content, {
+          x: index % 2 === 0 ? -40 : 40,
+          opacity: 0,
+          duration: 0.8,
+          ease: 'power3.out',
+        }, '-=0.3');
       });
     });
 
@@ -64,7 +81,7 @@ export const Timeline = () => {
   }, []);
 
   return (
-    <section className="section-padding bg-white overflow-hidden">
+    <section className="section-padding bg-white overflow-hidden relative z-10 rounded-t-[60px] -mt-20">
       <div className="container mx-auto px-6">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-4xl md:text-6xl font-bold tracking-tight mb-20 text-center">
@@ -85,13 +102,12 @@ export const Timeline = () => {
               {steps.map((step, index) => (
                 <div key={index} className="timeline-step relative flex flex-col md:flex-row items-center">
                   {/* Step Number Circle */}
-                  <div className="absolute left-[20px] md:left-1/2 -translate-x-1/2 w-10 h-10 rounded-full bg-white border-2 border-gray-border flex items-center justify-center font-bold text-lg z-20 transition-colors group-hover:border-accent">
-                    <div className="w-4 h-4 rounded-full bg-accent opacity-0 transition-opacity" />
+                  <div className="step-circle absolute left-[20px] md:left-1/2 -translate-x-1/2 w-12 h-12 rounded-full bg-white border-2 border-gray-border flex items-center justify-center font-bold text-xl z-20 transition-all duration-500">
                     {index + 1}
                   </div>
 
                   {/* Content */}
-                  <div className={`pl-16 md:pl-0 md:w-1/2 ${index % 2 === 0 ? 'md:pr-20 md:text-right' : 'md:ml-auto md:pl-20'}`}>
+                  <div className={`step-content pl-16 md:pl-0 md:w-1/2 ${index % 2 === 0 ? 'md:pr-20 md:text-right' : 'md:ml-auto md:pl-20'}`}>
                     <h3 className="text-3xl font-bold mb-4">{step.title}</h3>
                     <p className="text-xl text-black/50 leading-relaxed">
                       {step.description}

@@ -1,8 +1,9 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { ChevronDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import gsap from 'gsap';
 
 const faqs = [
   {
@@ -33,9 +34,27 @@ const faqs = [
 
 export const FAQ = () => {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.from('.faq-item', {
+        y: 40,
+        opacity: 0,
+        duration: 1,
+        stagger: 0.1,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: 'top 80%',
+        }
+      });
+    });
+    return () => ctx.revert();
+  }, []);
 
   return (
-    <section className="section-padding bg-white">
+    <section ref={containerRef} className="section-padding bg-white relative z-10 rounded-t-[60px] -mt-20">
       <div className="container mx-auto px-6">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-4xl md:text-6xl font-bold tracking-tight mb-16 text-center">
@@ -47,7 +66,7 @@ export const FAQ = () => {
               <div
                 key={index}
                 className={cn(
-                  "border border-gray-border rounded-[32px] overflow-hidden transition-all duration-500",
+                  "faq-item border border-gray-border rounded-[32px] overflow-hidden transition-all duration-500",
                   openIndex === index ? "bg-gray-soft shadow-sm" : "bg-white hover:border-accent/30"
                 )}
               >

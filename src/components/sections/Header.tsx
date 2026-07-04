@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Menu, X, Phone } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -16,6 +16,7 @@ const navLinks = [
 export const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const headerRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -27,9 +28,10 @@ export const Header = () => {
 
   return (
     <header
+      ref={headerRef}
       className={cn(
-        "fixed top-0 left-0 w-full z-50 transition-all duration-500",
-        isScrolled ? "bg-white/80 backdrop-blur-md py-3 shadow-sm border-b border-black/5" : "bg-transparent py-6"
+        "fixed top-0 left-0 w-full z-50 transition-all duration-700",
+        isScrolled ? "bg-white/90 backdrop-blur-xl py-3 shadow-sm border-b border-black/5" : "bg-transparent py-8"
       )}
     >
       <div className="container mx-auto px-6 flex items-center justify-between">
@@ -49,9 +51,10 @@ export const Header = () => {
             <a
               key={link.name}
               href={link.href}
-              className="hover:text-accent transition-colors"
+              className="relative hover:text-accent transition-colors group py-2"
             >
               {link.name}
+              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-accent transition-all duration-300 group-hover:w-full" />
             </a>
           ))}
         </nav>
