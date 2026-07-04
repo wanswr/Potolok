@@ -13,14 +13,14 @@ interface JourneyControllerProps {
 
 export const JourneyController: React.FC<JourneyControllerProps> = ({ children }) => {
   const wrapperRef = useRef<HTMLDivElement>(null);
-  const contentRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // 1. Initialize Lenis for smooth scroll
+    // 1. Initialize Lenis with refined parameters for premium smoothness
     const lenis = new Lenis({
-      duration: 1.5,
+      duration: 1.4,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
+      touchMultiplier: 2,
     });
 
     function raf(time: number) {
@@ -32,92 +32,95 @@ export const JourneyController: React.FC<JourneyControllerProps> = ({ children }
     const ctx = gsap.context(() => {
       const sections = gsap.utils.toArray<HTMLElement>('section[data-journey-section]');
 
-      // Pinning the entire content to allow layered transitions
-      // Note: This requires the wrapper to have a set height or the content to be pinned
-
       sections.forEach((section, i) => {
         const isHero = i === 0;
         const isLast = i === sections.length - 1;
         const elements = section.querySelectorAll('[data-journey-element]');
 
-        // --- ENTRANCE JOURNEY ---
-        if (!isHero) {
-          const tl = gsap.timeline({
-            scrollTrigger: {
-              trigger: section,
-              start: 'top bottom',
-              end: 'top center',
-              scrub: 1.5,
-            }
+        // --- SECTION PINNING & SEQUENCED REVEAL ---
+        // Instead of just scrolling through, we pin the section if it has complex elements
+        if (elements.length > 0 && !isHero && !isLast) {
+          ScrollTrigger.create({
+            trigger: section,
+            start: 'top top',
+            end: '+=80%',
+            pin: true,
+            pinSpacing: true,
           });
+        }
 
-          tl.fromTo(section,
+        // --- ENTRANCE JOURNEY (Non-Destructive) ---
+        if (!isHero) {
+          gsap.fromTo(section,
             {
-              y: '40vh',
+              y: '15vh',
               opacity: 0,
-              scale: 0.8,
-              filter: 'blur(20px)',
-              transformPerspective: 1000,
-              rotationX: -10,
+              scale: 0.95,
+              filter: 'blur(10px)',
             },
             {
               y: 0,
               opacity: 1,
               scale: 1,
               filter: 'blur(0px)',
-              rotationX: 0,
-              ease: 'power3.inOut',
+              ease: 'power2.out',
+              scrollTrigger: {
+                trigger: section,
+                start: 'top bottom',
+                end: 'top 20%',
+                scrub: 1.2,
+              }
             }
           );
         }
 
-        // --- ELEMENT ASSEMBLY ---
+        // --- ELEMENT ASSEMBLY (Apple Fidelity) ---
         if (elements.length > 0) {
           gsap.from(elements, {
-            y: 100,
+            y: 80,
             opacity: 0,
-            filter: 'blur(10px)',
+            filter: 'blur(8px)',
             scale: 0.9,
-            stagger: 0.1,
+            stagger: {
+              amount: 0.6,
+              from: 'start',
+            },
             ease: 'expo.out',
             scrollTrigger: {
               trigger: section,
-              start: 'top 70%',
+              start: isHero ? 'top top' : 'top 80%',
               end: 'top 20%',
               scrub: 1,
             }
           });
         }
 
-        // --- SECTION STACKING (EXIT) ---
+        // --- GENTLE SECTION EXIT ---
         if (!isLast) {
           gsap.to(section, {
-            y: '-30vh',
-            scale: 0.85,
-            opacity: 0,
-            filter: 'blur(30px)',
-            ease: 'power2.in',
+            opacity: 0.2,
+            scale: 0.95,
+            y: '-10vh',
+            filter: 'blur(10px)',
+            ease: 'power1.in',
             scrollTrigger: {
               trigger: section,
-              start: 'bottom bottom',
+              start: 'bottom 90%',
               end: 'bottom top',
               scrub: 1,
             }
           });
         }
+      });
 
-        // --- DYNAMIC LIGHTING TRANSITION ---
-        if (section.id === 'types') {
-          gsap.to('main', {
-            backgroundColor: '#0a0a0c',
-            duration: 1,
-            scrollTrigger: {
-              trigger: section,
-              start: 'top center',
-              end: 'bottom center',
-              scrub: true,
-            }
-          });
+      // Global Atmosphere (Dark/Light morph)
+      gsap.to('main', {
+        backgroundColor: '#050505',
+        scrollTrigger: {
+          trigger: wrapperRef.current,
+          start: 'top top',
+          end: 'bottom bottom',
+          scrub: true,
         }
       });
 
@@ -130,8 +133,14 @@ export const JourneyController: React.FC<JourneyControllerProps> = ({ children }
   }, []);
 
   return (
-    <div ref={wrapperRef} id="journey-wrapper" className="relative overflow-hidden">
-      <div ref={contentRef} id="journey-content" className="relative">
+    <div ref={wrapperRef} id="journey-wrapper" className="relative">
+      {/* Persisted Interior Canvas Background */}
+      <div className="fixed inset-0 pointer-events-none z-0">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,_rgba(0,102,255,0.05),_transparent)]" />
+        <div className="absolute top-0 left-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/dark-matter.png')] opacity-[0.03]" />
+      </div>
+
+      <div className="relative z-10">
         {children}
       </div>
     </div>

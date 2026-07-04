@@ -1,7 +1,6 @@
 'use client';
 
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { useRef } from 'react';
 import { Star } from 'lucide-react';
 
 const testimonials = [
@@ -26,8 +25,10 @@ const testimonials = [
 ];
 
 export const SocialProof = () => {
+  const containerRef = useRef<HTMLDivElement>(null);
+
   return (
-    <section id="reviews" className="section-padding bg-white">
+    <section id="reviews" ref={containerRef} data-journey-section className="section-padding bg-white relative z-10 rounded-t-[60px] -mt-20">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-5xl font-bold mb-4">Отзывы клиентов</h2>
@@ -41,12 +42,9 @@ export const SocialProof = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {testimonials.map((item, index) => (
-            <motion.div
+            <div
               key={index}
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.1 }}
+              data-journey-element
               className="p-8 rounded-3xl bg-[#F8F9FA] border border-gray-100 flex flex-col justify-between h-full"
             >
               <div>
@@ -63,7 +61,7 @@ export const SocialProof = () => {
                 <div className="font-bold text-lg">{item.name}</div>
                 <div className="text-gray-500 text-sm">{item.role}</div>
               </div>
-            </motion.div>
+            </div>
           ))}
         </div>
       </div>
