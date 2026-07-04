@@ -13,14 +13,13 @@ interface JourneyControllerProps {
 
 export const JourneyController: React.FC<JourneyControllerProps> = ({ children }) => {
   const wrapperRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // 1. Initialize Lenis for smooth scroll (Apple feel)
+    // 1. Initialize Lenis for smooth scroll
     const lenis = new Lenis({
-      duration: 1.2,
+      duration: 1.5,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      orientation: 'vertical',
-      gestureOrientation: 'vertical',
       smoothWheel: true,
     });
 
@@ -30,77 +29,93 @@ export const JourneyController: React.FC<JourneyControllerProps> = ({ children }
     }
     requestAnimationFrame(raf);
 
-    lenis.on('scroll', ScrollTrigger.update);
-    gsap.ticker.add((time) => {
-      lenis.raf(time * 1000);
-    });
-    gsap.ticker.lagSmoothing(0);
-
     const ctx = gsap.context(() => {
       const sections = gsap.utils.toArray<HTMLElement>('section[data-journey-section]');
+
+      // Pinning the entire content to allow layered transitions
+      // Note: This requires the wrapper to have a set height or the content to be pinned
 
       sections.forEach((section, i) => {
         const isHero = i === 0;
         const isLast = i === sections.length - 1;
+        const elements = section.querySelectorAll('[data-journey-element]');
 
-        // Complex Section Entrance (Apple Reveal)
+        // --- ENTRANCE JOURNEY ---
         if (!isHero) {
-          gsap.fromTo(section,
+          const tl = gsap.timeline({
+            scrollTrigger: {
+              trigger: section,
+              start: 'top bottom',
+              end: 'top center',
+              scrub: 1.5,
+            }
+          });
+
+          tl.fromTo(section,
             {
-              y: '20vh',
+              y: '40vh',
               opacity: 0,
-              scale: 0.9,
-              clipPath: 'inset(10% 5% 10% 5% round 60px)',
+              scale: 0.8,
+              filter: 'blur(20px)',
+              transformPerspective: 1000,
+              rotationX: -10,
             },
             {
               y: 0,
               opacity: 1,
               scale: 1,
-              clipPath: 'inset(0% 0% 0% 0% round 60px)',
-              ease: 'power2.inOut',
-              scrollTrigger: {
-                trigger: section,
-                start: 'top bottom',
-                end: 'top 10%',
-                scrub: 1.5,
-              }
+              filter: 'blur(0px)',
+              rotationX: 0,
+              ease: 'power3.inOut',
             }
           );
         }
 
-        // Deep-Dive Element Sequencing
-        const elements = section.querySelectorAll('[data-journey-element]');
+        // --- ELEMENT ASSEMBLY ---
         if (elements.length > 0) {
           gsap.from(elements, {
-            y: 150,
+            y: 100,
             opacity: 0,
-            rotationX: -15,
-            scale: 0.8,
             filter: 'blur(10px)',
-            stagger: 0.2,
+            scale: 0.9,
+            stagger: 0.1,
             ease: 'expo.out',
             scrollTrigger: {
               trigger: section,
               start: 'top 70%',
               end: 'top 20%',
-              scrub: 1.5,
+              scrub: 1,
             }
           });
         }
 
-        // Section Stacking Exit
+        // --- SECTION STACKING (EXIT) ---
         if (!isLast) {
           gsap.to(section, {
+            y: '-30vh',
             scale: 0.85,
-            opacity: 0.4,
-            filter: 'blur(8px)',
-            y: '-10vh',
-            ease: 'power1.in',
+            opacity: 0,
+            filter: 'blur(30px)',
+            ease: 'power2.in',
             scrollTrigger: {
               trigger: section,
               start: 'bottom bottom',
               end: 'bottom top',
               scrub: 1,
+            }
+          });
+        }
+
+        // --- DYNAMIC LIGHTING TRANSITION ---
+        if (section.id === 'types') {
+          gsap.to('main', {
+            backgroundColor: '#0a0a0c',
+            duration: 1,
+            scrollTrigger: {
+              trigger: section,
+              start: 'top center',
+              end: 'bottom center',
+              scrub: true,
             }
           });
         }
@@ -115,8 +130,10 @@ export const JourneyController: React.FC<JourneyControllerProps> = ({ children }
   }, []);
 
   return (
-    <div ref={wrapperRef} id="journey-wrapper" className="relative">
-      {children}
+    <div ref={wrapperRef} id="journey-wrapper" className="relative overflow-hidden">
+      <div ref={contentRef} id="journey-content" className="relative">
+        {children}
+      </div>
     </div>
   );
 };

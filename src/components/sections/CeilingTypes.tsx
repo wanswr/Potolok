@@ -15,13 +15,7 @@ const ceilingTypes = [
     features: ['Без бликов', 'Скрывает дефекты', 'Долговечность'],
     price: 'от 550 ₽/м²',
     image: 'https://images.unsplash.com/photo-1513694203232-719a280e022f?q=80&w=2069&auto=format&fit=crop',
-  },
-  {
-    title: 'Сатиновый',
-    description: 'Обладает легким перламутровым блеском и гладкой текстурой. Идеально для спален и гостиных.',
-    features: ['Мягкий блеск', 'Элегантный вид', 'Универсальность'],
-    price: 'от 650 ₽/м²',
-    image: 'https://images.unsplash.com/photo-1502005229762-cf1b2da7c5d6?q=80&w=2030&auto=format&fit=crop',
+    light: 'soft-white',
   },
   {
     title: 'Глянцевый',
@@ -29,6 +23,15 @@ const ceilingTypes = [
     features: ['Зеркальный эффект', 'Визуальный объем', 'Яркие цвета'],
     price: 'от 600 ₽/м²',
     image: 'https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?q=80&w=2064&auto=format&fit=crop',
+    light: 'reflective',
+  },
+  {
+    title: 'Звездное небо',
+    description: 'Эффект ночного неба с тысячами мерцающих звезд. Идеально для детских и спален.',
+    features: ['Мерцание', 'Оптоволокно', 'Уникальный дизайн'],
+    price: 'от 2500 ₽/м²',
+    image: 'https://images.unsplash.com/photo-1534796636912-3b95b3ab5986?q=80&w=2071&auto=format&fit=crop',
+    light: 'cosmic',
   },
   {
     title: 'Световой',
@@ -36,6 +39,7 @@ const ceilingTypes = [
     features: ['Встроенный свет', 'WOW-эффект', 'Трендовый дизайн'],
     price: 'от 1200 ₽/м²',
     image: 'https://images.unsplash.com/photo-1618221195710-dd6b41faeaa6?q=80&w=2070&auto=format&fit=crop',
+    light: 'led-lines',
   },
 ];
 
