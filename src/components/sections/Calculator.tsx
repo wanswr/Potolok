@@ -22,32 +22,6 @@ export const Calculator = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const ctx = gsap.context(() => {
-      gsap.from('.calc-card', {
-        y: 100,
-        opacity: 0,
-        duration: 1.2,
-        ease: 'expo.out',
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: 'top 80%',
-        }
-      });
-
-      // Background glow pulse
-      gsap.to('.calc-glow', {
-        opacity: 0.4,
-        scale: 1.2,
-        duration: 3,
-        repeat: -1,
-        yoyo: true,
-        ease: 'sine.inOut'
-      });
-    });
-    return () => ctx.revert();
-  }, []);
-
-  useEffect(() => {
     const basePrice = (ceilingPrices[type] || 500) * area;
     const lightsPrice = lights * 450;
     const cornersPrice = Math.max(0, corners - 4) * 200;
@@ -68,7 +42,7 @@ export const Calculator = () => {
   }, [area, type, lights, corners, total]);
 
   return (
-    <section id="calculator" ref={sectionRef} data-journey-section className="section-padding bg-white relative z-10 rounded-t-[60px] -mt-20">
+    <section id="calculator" ref={sectionRef} data-journey-section="calculator" className="section-padding bg-white relative z-10 rounded-t-[60px] -mt-20">
       <div className="container mx-auto px-6">
         <div data-journey-element className="max-w-6xl mx-auto calc-card">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">

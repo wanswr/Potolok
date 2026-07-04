@@ -19,10 +19,29 @@ export const Header = () => {
   const headerRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
+    let lastValue = false;
+    let ticking = false;
+
+    const update = () => {
+      const shouldBeScrolled = window.scrollY > 20;
+
+      if (shouldBeScrolled !== lastValue) {
+        lastValue = shouldBeScrolled;
+        setIsScrolled(shouldBeScrolled);
+      }
+
+      ticking = false;
     };
-    window.addEventListener('scroll', handleScroll);
+
+    const handleScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(update);
+        ticking = true;
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -31,7 +50,9 @@ export const Header = () => {
       ref={headerRef}
       className={cn(
         "fixed top-0 left-0 w-full z-50 transition-all duration-700",
-        isScrolled ? "bg-white/90 backdrop-blur-xl py-3 shadow-sm border-b border-black/5" : "bg-transparent py-8"
+        isScrolled
+          ? "bg-white/90 backdrop-blur-xl py-3 shadow-sm border-b border-black/5"
+          : "bg-transparent py-8"
       )}
     >
       <div className="container mx-auto px-6 flex items-center justify-between">
@@ -70,6 +91,7 @@ export const Header = () => {
             <Phone className="w-4 h-4 text-accent" />
             +7 (999) 000-00-00
           </a>
+
           <button className="bg-accent hover:bg-accent-dark text-white px-6 py-2.5 rounded-full font-semibold transition-all shadow-lg shadow-accent/10 text-[14px]">
             Рассчитать стоимость
           </button>
@@ -93,6 +115,7 @@ export const Header = () => {
           <div className="text-2xl font-bold tracking-tight text-black">
             Potolok<span className="text-accent">Bel</span>
           </div>
+
           <button
             className="p-2 text-black"
             onClick={() => setIsMobileMenuOpen(false)}
@@ -103,14 +126,21 @@ export const Header = () => {
 
         <nav className="flex flex-col gap-6 text-xl font-semibold text-black">
           {navLinks.map((link) => (
-            <a key={link.name} href={link.href} onClick={() => setIsMobileMenuOpen(false)}>
+            <a
+              key={link.name}
+              href={link.href}
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
               {link.name}
             </a>
           ))}
         </nav>
 
         <div className="mt-auto flex flex-col gap-4">
-          <a href="tel:+79990000000" className="text-xl font-bold text-black">+7 (999) 000-00-00</a>
+          <a href="tel:+79990000000" className="text-xl font-bold text-black">
+            +7 (999) 000-00-00
+          </a>
+
           <button className="bg-accent text-white py-4 rounded-xl font-bold">
             Заказать замер
           </button>

@@ -3,6 +3,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Phone, Clock, ShieldCheck, CheckCircle2 } from 'lucide-react';
 import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
 
 export const FinalCTA = () => {
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
@@ -15,13 +18,8 @@ export const FinalCTA = () => {
     try {
       const response = await fetch('/api/contact', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          ...formData,
-          source: 'Final CTA Form'
-        }),
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...formData, source: 'Final CTA Form' }),
       });
 
       if (response.ok) {
@@ -41,32 +39,6 @@ export const FinalCTA = () => {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Reveal Side Content
-      gsap.from('.cta-content-side > *', {
-        x: -50,
-        opacity: 0,
-        duration: 1.2,
-        stagger: 0.15,
-        ease: 'power4.out',
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: 'top 70%',
-        }
-      });
-
-      // Reveal Form
-      gsap.from(formRef.current, {
-        x: 50,
-        opacity: 0,
-        scale: 0.95,
-        duration: 1.5,
-        ease: 'power4.out',
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: 'top 70%',
-        }
-      });
-
       // Background Light Movement
       gsap.to('.cta-glow', {
         x: '30%',
@@ -76,12 +48,17 @@ export const FinalCTA = () => {
         yoyo: true,
         ease: 'sine.inOut'
       });
-    });
+    }, sectionRef);
     return () => ctx.revert();
   }, []);
 
   return (
-    <section id="contacts" ref={sectionRef} data-journey-section className="section-padding bg-black text-white relative overflow-hidden rounded-t-[60px] -mt-20">
+    <section
+      id="contacts"
+      ref={sectionRef}
+      data-journey-section="contacts"
+      className="section-padding bg-black text-white relative overflow-hidden rounded-t-[60px] -mt-20"
+    >
       {/* Decorative background */}
       <div className="cta-glow absolute bottom-0 left-0 w-full h-full bg-gradient-to-tr from-accent/20 via-transparent to-transparent pointer-events-none blur-[120px] opacity-50" />
 
@@ -136,13 +113,19 @@ export const FinalCTA = () => {
             </div>
 
             <div className="p-6 rounded-3xl bg-white/5 border border-white/10 inline-block">
-              <div className="text-sm text-white/40 mb-2 uppercase tracking-widest font-bold">Осталось мест на сегодня:</div>
+              <div className="text-sm text-white/40 mb-2 uppercase tracking-widest font-bold">
+                Осталось мест на сегодня:
+              </div>
               <div className="text-3xl font-bold text-accent">3 свободных окна</div>
             </div>
           </div>
 
           {/* Form Side */}
-          <div ref={formRef} data-journey-element className="bg-white rounded-[48px] p-10 md:p-16 text-black relative shadow-2xl shadow-accent/10">
+          <div
+            ref={formRef}
+            data-journey-element
+            className="bg-white rounded-[48px] p-10 md:p-16 text-black relative shadow-2xl shadow-accent/10"
+          >
             {status === 'success' ? (
               <div className="text-center py-10">
                 <div className="w-24 h-24 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-8">
@@ -152,10 +135,7 @@ export const FinalCTA = () => {
                 <p className="text-black/50 text-lg leading-relaxed mb-8">
                   Мы получили вашу заявку и перезвоним вам в течение 15 минут.
                 </p>
-                <button
-                  onClick={() => setStatus('idle')}
-                  className="text-accent font-bold hover:underline"
-                >
+                <button onClick={() => setStatus('idle')} className="text-accent font-bold hover:underline">
                   Отправить еще раз
                 </button>
               </div>
@@ -168,10 +148,7 @@ export const FinalCTA = () => {
                 <p className="text-black/50 text-lg leading-relaxed mb-8">
                   Что-то пошло не так. Пожалуйста, попробуйте позже или позвоните нам.
                 </p>
-                <button
-                  onClick={() => setStatus('idle')}
-                  className="text-accent font-bold hover:underline"
-                >
+                <button onClick={() => setStatus('idle')} className="text-accent font-bold hover:underline">
                   Попробовать снова
                 </button>
               </div>
@@ -184,7 +161,9 @@ export const FinalCTA = () => {
 
                 <form onSubmit={handleSubmit} className="space-y-6">
                   <div>
-                    <label className="text-sm font-bold text-black/40 uppercase tracking-wider block mb-3 ml-2">Ваше имя</label>
+                    <label className="text-sm font-bold text-black/40 uppercase tracking-wider block mb-3 ml-2">
+                      Ваше имя
+                    </label>
                     <input
                       type="text"
                       required
@@ -196,7 +175,9 @@ export const FinalCTA = () => {
                   </div>
 
                   <div>
-                    <label className="text-sm font-bold text-black/40 uppercase tracking-wider block mb-3 ml-2">Телефон</label>
+                    <label className="text-sm font-bold text-black/40 uppercase tracking-wider block mb-3 ml-2">
+                      Телефон
+                    </label>
                     <input
                       type="tel"
                       required
@@ -222,7 +203,6 @@ export const FinalCTA = () => {
               </>
             )}
           </div>
-
         </div>
       </div>
     </section>

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 import Image from 'next/image';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -53,104 +53,75 @@ const ceilingTypes = [
 
 export const CeilingTypes = () => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const cardsRef = useRef<HTMLDivElement[]>([]);
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>, card: HTMLDivElement) => {
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>, index: number) => {
+    const card = cardsRef.current[index];
+    if (!card) return;
+
     const rect = card.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
-
     const centerX = rect.width / 2;
     const centerY = rect.height / 2;
 
-    const rotateX = (y - centerY) / 20;
-    const rotateY = (centerX - x) / 20;
-
     gsap.to(card, {
-      rotateX: rotateX,
-      rotateY: rotateY,
-      duration: 0.5,
+      rotateX: (y - centerY) / 20,
+      rotateY: (centerX - x) / 20,
+      duration: 0.4,
       ease: 'power2.out',
+      transformPerspective: 1200,
     });
 
     const img = card.querySelector('img');
     if (img) {
       gsap.to(img, {
-        x: (x - centerX) / 10,
-        y: (y - centerY) / 10,
-        duration: 0.5,
+        x: (x - centerX) / 12,
+        y: (y - centerY) / 12,
+        duration: 0.4,
         ease: 'power2.out',
       });
     }
   };
 
-  const handleMouseLeave = (card: HTMLDivElement) => {
+  const handleMouseLeave = (index: number) => {
+    const card = cardsRef.current[index];
+    if (!card) return;
+
     gsap.to(card, {
       rotateX: 0,
       rotateY: 0,
-      duration: 0.5,
+      duration: 0.6,
       ease: 'power2.out',
     });
+
     const img = card.querySelector('img');
     if (img) {
-      gsap.to(img, {
-        x: 0,
-        y: 0,
-        duration: 0.5,
-        ease: 'power2.out',
-      });
+      gsap.to(img, { x: 0, y: 0, duration: 0.6, ease: 'power2.out' });
     }
   };
 
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      // Reveal Title Block
-      gsap.from('.types-header > *', {
-        y: 40,
-        opacity: 0,
-        duration: 1.2,
-        stagger: 0.2,
-        ease: 'power4.out',
-        scrollTrigger: {
-          trigger: containerRef.current,
-          start: 'top 80%',
-        }
-      });
-
-      // Ceiling Cards with staggered lift and subtle rotation
-      gsap.from('.ceiling-card', {
-        y: 100,
-        rotationX: -10,
-        scale: 0.95,
-        opacity: 0,
-        duration: 1.2,
-        stagger: 0.15,
-        ease: 'expo.out',
-        scrollTrigger: {
-          trigger: containerRef.current,
-          start: 'top 75%',
-        }
-      });
-
-    });
-
-    return () => ctx.revert();
-  }, []);
-
   return (
-    <section id="types" ref={containerRef} data-journey-section className="section-padding bg-gray-soft relative z-10 rounded-t-[60px] -mt-20">
+    <section
+      id="types"
+      ref={containerRef}
+      data-journey-section="types"
+      className="section-padding bg-gray-soft relative z-10 rounded-t-[60px] -mt-20"
+    >
       <div className="container mx-auto px-6">
         <div className="types-header flex flex-col md:flex-row md:items-end justify-between mb-20 gap-8">
           <div className="max-w-2xl">
-            <h2 className="text-4xl md:text-6xl font-bold tracking-tight mb-8">
+            <h2 data-journey-element className="text-4xl md:text-6xl font-bold tracking-tight mb-8">
               Виды <br />
               <span className="text-accent">потолков</span>
             </h2>
-            <p className="text-xl text-black/60">
+            <p data-journey-element className="text-xl text-black/60">
               Подберем идеальное решение под ваш бюджет и интерьер.
               От классики до ультрасовременных световых решений.
             </p>
           </div>
-          <button className="hidden md:flex items-center gap-3 text-lg font-bold group">
+
+          <button data-journey-element className="hidden md:flex items-center gap-3 text-lg font-bold group">
             Смотреть все виды
             <div className="w-12 h-12 rounded-full border border-black/10 flex items-center justify-center group-hover:bg-black group-hover:text-white transition-all">
               <ArrowRight size={20} />
@@ -163,23 +134,21 @@ export const CeilingTypes = () => {
             <div
               key={index}
               data-journey-element
-              onMouseMove={(e) => handleMouseMove(e, e.currentTarget)}
-              onMouseLeave={(e) => handleMouseLeave(e.currentTarget)}
+              ref={(el) => { if (el) cardsRef.current[index] = el; }}
+              onMouseMove={(e) => handleMouseMove(e, index)}
+              onMouseLeave={() => handleMouseLeave(index)}
               className="ceiling-card group relative h-[500px] md:h-[600px] rounded-[40px] overflow-hidden bg-white border border-black/5 cursor-pointer will-change-transform"
             >
-              {/* Image */}
               <div className="absolute inset-0 overflow-hidden">
                 <Image
                   src={type.image}
                   alt={type.title}
                   fill
-                  sizes="(max-width: 768px) 100vw, 50vw"
                   className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
               </div>
 
-              {/* Content */}
               <div className="absolute inset-0 p-10 flex flex-col justify-end text-white">
                 <div className="mb-6 transform transition-transform duration-500 group-hover:-translate-y-2">
                   <div className="text-accent font-bold text-lg mb-2">{type.price}</div>

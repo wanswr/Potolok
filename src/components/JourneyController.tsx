@@ -15,12 +15,11 @@ export const JourneyController: React.FC<JourneyControllerProps> = ({ children }
   const wrapperRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // 1. Initialize Lenis with refined parameters for premium smoothness
+    // 1. Initialize Lenis for smooth scroll
     const lenis = new Lenis({
       duration: 1.4,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
-      touchMultiplier: 2,
     });
 
     function raf(time: number) {
@@ -33,87 +32,90 @@ export const JourneyController: React.FC<JourneyControllerProps> = ({ children }
       const sections = gsap.utils.toArray<HTMLElement>('section[data-journey-section]');
 
       sections.forEach((section, i) => {
-        const isHero = i === 0;
+        const isHero = section.getAttribute('data-journey-section') === 'hero';
         const isLast = i === sections.length - 1;
         const elements = section.querySelectorAll('[data-journey-element]');
 
-        // --- SECTION PINNING & SEQUENCED REVEAL ---
-        // Instead of just scrolling through, we pin the section if it has complex elements
-        if (elements.length > 0 && !isHero && !isLast) {
+        // --- SECTION PINNING ---
+        // If it's not the hero, we pin it for a while to allow sub-animations
+        if (!isHero && !isLast) {
           ScrollTrigger.create({
             trigger: section,
             start: 'top top',
-            end: '+=80%',
+            end: '+=100%',
             pin: true,
             pinSpacing: true,
+            anticipatePin: 1,
           });
         }
 
-        // --- ENTRANCE JOURNEY (Non-Destructive) ---
+        // --- SECTION ENTRANCE (Apple Reveal) ---
         if (!isHero) {
           gsap.fromTo(section,
             {
-              y: '15vh',
               opacity: 0,
-              scale: 0.95,
-              filter: 'blur(10px)',
+              scale: 0.9,
+              y: '20vh',
+              filter: 'blur(15px)',
             },
             {
-              y: 0,
               opacity: 1,
               scale: 1,
+              y: 0,
               filter: 'blur(0px)',
-              ease: 'power2.out',
+              ease: 'power3.inOut',
               scrollTrigger: {
                 trigger: section,
                 start: 'top bottom',
                 end: 'top 20%',
-                scrub: 1.2,
+                scrub: 1,
               }
             }
           );
         }
 
-        // --- ELEMENT ASSEMBLY (Apple Fidelity) ---
+        // --- SUB-ELEMENT SEQUENCING (High Fidelity) ---
         if (elements.length > 0) {
           gsap.from(elements, {
-            y: 80,
+            y: 120,
             opacity: 0,
-            filter: 'blur(8px)',
-            scale: 0.9,
+            filter: 'blur(20px)',
+            scale: 0.85,
+            rotationX: -15,
+            transformPerspective: 1000,
             stagger: {
-              amount: 0.6,
+              amount: 0.8,
               from: 'start',
             },
-            ease: 'expo.out',
+            ease: 'power3.out',
             scrollTrigger: {
               trigger: section,
-              start: isHero ? 'top top' : 'top 80%',
-              end: 'top 20%',
-              scrub: 1,
+              start: isHero ? 'top top' : 'top 85%',
+              end: isHero ? '+=60%' : 'top 15%',
+              scrub: 1.5,
             }
           });
         }
 
-        // --- GENTLE SECTION EXIT ---
+        // --- SECTION EXIT ---
         if (!isLast) {
           gsap.to(section, {
-            opacity: 0.2,
+            opacity: 0.3,
             scale: 0.95,
             y: '-10vh',
-            filter: 'blur(10px)',
-            ease: 'power1.in',
+            filter: 'blur(20px)',
+            ease: 'power2.in',
             scrollTrigger: {
               trigger: section,
               start: 'bottom 90%',
               end: 'bottom top',
-              scrub: 1,
+              scrub: 1.5,
             }
           });
         }
       });
 
-      // Global Atmosphere (Dark/Light morph)
+      // Global Atmosphere morph
       gsap.to('main', {
         backgroundColor: '#050505',
         scrollTrigger: {
@@ -134,10 +136,9 @@ export const JourneyController: React.FC<JourneyControllerProps> = ({ children }
 
   return (
     <div ref={wrapperRef} id="journey-wrapper" className="relative">
-      {/* Persisted Interior Canvas Background */}
+      {/* Background Atmosphere */}
       <div className="fixed inset-0 pointer-events-none z-0">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,_rgba(0,102,255,0.05),_transparent)]" />
-        <div className="absolute top-0 left-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/dark-matter.png')] opacity-[0.03]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,_rgba(0,102,255,0.03),_transparent)]" />
       </div>
 
       <div className="relative z-10">

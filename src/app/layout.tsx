@@ -4,23 +4,24 @@ import "./globals.css";
 
 const inter = Inter({
   subsets: ["latin", "cyrillic"],
-  display: 'swap',
-  variable: '--font-inter',
+  display: "swap",
+  variable: "--font-inter",
 });
 
 export const metadata: Metadata = {
   title: "PotolokBel | Премиальные натяжные потолки в Москве и МО",
-  description: "Профессиональная установка натяжных потолков под ключ. Гарантия 15 лет, чистый монтаж за 1 день. Бесплатный замер по Москве и области.",
+  description:
+    "Профессиональная установка натяжных потолков под ключ. Гарантия 15 лет, чистый монтаж за 1 день. Бесплатный замер по Москве и области.",
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="ru" className="scroll-smooth">
-      <body className={`${inter.variable} font-sans antialiased bg-white text-[#1A1A1A]`}>
+      <body
+        className={`${inter.variable} font-sans antialiased bg-white text-[#1A1A1A] overflow-x-hidden`}
+      >
         {children}
       </body>
     </html>
