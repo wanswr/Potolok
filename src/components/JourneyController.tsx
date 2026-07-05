@@ -4,6 +4,7 @@ import React, { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Lenis from 'lenis';
+import { MOTION_CONFIG } from '@/lib/motion-config';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -15,9 +16,9 @@ export const JourneyController: React.FC<JourneyControllerProps> = ({ children }
   const wrapperRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // 1. Initialize Lenis for smooth scroll
+    // 1. Initialize Lenis with Config
     const lenis = new Lenis({
-      duration: 1.4,
+      duration: MOTION_CONFIG.global.smoothScrollDuration,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
     });
@@ -32,57 +33,59 @@ export const JourneyController: React.FC<JourneyControllerProps> = ({ children }
       const sections = gsap.utils.toArray<HTMLElement>('section[data-journey-section]');
 
       sections.forEach((section, i) => {
-        const isHero = section.getAttribute('data-journey-section') === 'hero';
+        const sectionId = section.getAttribute('data-journey-section') as keyof typeof MOTION_CONFIG.sections;
+        const config = MOTION_CONFIG.sections[sectionId] as any;
+        const isHero = sectionId === 'hero';
         const isLast = i === sections.length - 1;
         const elements = section.querySelectorAll('[data-journey-element]');
 
-        // --- SECTION PINNING ---
-        // If it's not the hero, we pin it for a while to allow sub-animations
-        if (!isHero && !isLast) {
+        // --- ENHANCED SECTION PINNING ---
+        if (!isHero && !isLast && config?.pinDuration) {
           ScrollTrigger.create({
             trigger: section,
             start: 'top top',
-            end: '+=100%',
+            end: config.pinDuration,
             pin: true,
             pinSpacing: true,
             anticipatePin: 1,
           });
         }
 
-        // --- SECTION ENTRANCE (Apple Reveal) ---
-        if (!isHero) {
+        // --- PREMIUM ENTRANCE JOURNEY (Using Config) ---
+        if (!isHero && config) {
           gsap.fromTo(section,
             {
               opacity: 0,
-              scale: 0.9,
-              y: '20vh',
-              filter: 'blur(15px)',
+              scale: MOTION_CONFIG.sections.features.scale, // fallback scale
+              y: config.entranceY || '20vh',
+              filter: `blur(${MOTION_CONFIG.sections.features.blur}px)`,
             },
             {
               opacity: 1,
               scale: 1,
               y: 0,
               filter: 'blur(0px)',
-              ease: 'power3.inOut',
+              ease: MOTION_CONFIG.global.ease,
               scrollTrigger: {
                 trigger: section,
                 start: 'top bottom',
-                end: 'top 20%',
-                scrub: 1,
+                end: 'top 15%',
+                scrub: MOTION_CONFIG.global.scrub,
               }
             }
           );
         }
 
-        // --- SUB-ELEMENT SEQUENCING (High Fidelity) ---
+        // --- SUB-ELEMENT HIGH-FIDELITY ASSEMBLY ---
         if (elements.length > 0) {
+          const elConfig = MOTION_CONFIG.elements.reveal;
           gsap.fromTo(elements,
             {
-              y: 120,
+              y: elConfig.y,
               opacity: 0,
-              filter: 'blur(20px)',
-              scale: 0.85,
-              rotationX: -15,
+              filter: `blur(${elConfig.blur}px)`,
+              scale: elConfig.scale,
+              rotationX: elConfig.rotationX,
               transformPerspective: 1000,
             },
             {
@@ -92,46 +95,49 @@ export const JourneyController: React.FC<JourneyControllerProps> = ({ children }
               scale: 1,
               rotationX: 0,
               stagger: {
-                amount: 0.8,
+                amount: MOTION_CONFIG.global.staggerAmount,
                 from: 'start',
               },
               ease: 'power3.out',
               scrollTrigger: {
                 trigger: section,
                 start: isHero ? 'top top' : 'top 85%',
-                end: isHero ? '+=60%' : 'top 15%',
-                scrub: 1.5,
+                end: isHero ? '+=60%' : 'top 10%',
+                scrub: MOTION_CONFIG.global.scrub,
               }
             }
           );
         }
 
-        // --- SECTION EXIT ---
+        // --- SECTION EXIT (Layered Stacking) ---
         if (!isLast) {
+          const exitConfig = MOTION_CONFIG.elements.exit;
           gsap.to(section, {
-            opacity: 0.3,
-            scale: 0.95,
-            y: '-10vh',
-            filter: 'blur(20px)',
+            opacity: exitConfig.opacity,
+            scale: exitConfig.scale,
+            y: exitConfig.y,
+            filter: `blur(${exitConfig.blur}px)`,
             ease: 'power2.in',
             scrollTrigger: {
               trigger: section,
-              start: 'bottom 90%',
+              start: 'bottom 95%',
               end: 'bottom top',
-              scrub: 1.5,
+              scrub: MOTION_CONFIG.global.scrub,
             }
           });
         }
-      });
 
-      // Global Atmosphere morph
-      gsap.to('main', {
-        backgroundColor: '#050505',
-        scrollTrigger: {
-          trigger: wrapperRef.current,
-          start: 'top top',
-          end: 'bottom bottom',
-          scrub: true,
+        // --- DYNAMIC BACKGROUND ATMOSPHERE ---
+        if (config?.backgroundColor) {
+          gsap.to('main', {
+            backgroundColor: config.backgroundColor,
+            scrollTrigger: {
+              trigger: section,
+              start: 'top 50%',
+              end: 'bottom 50%',
+              scrub: true,
+            }
+          });
         }
       });
 
@@ -145,9 +151,12 @@ export const JourneyController: React.FC<JourneyControllerProps> = ({ children }
 
   return (
     <div ref={wrapperRef} id="journey-wrapper" className="relative">
-      {/* Background Atmosphere */}
+      {/* Persisted Background Atmosphere with Configurable Opacity */}
       <div className="fixed inset-0 pointer-events-none z-0">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,_rgba(0,102,255,0.03),_transparent)]" />
+        <div
+          className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,_rgba(0,102,255,1),_transparent)]"
+          style={{ opacity: MOTION_CONFIG.global.atmosphereOpacity }}
+        />
       </div>
 
       <div className="relative z-10">

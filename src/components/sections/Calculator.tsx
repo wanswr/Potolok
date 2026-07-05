@@ -22,6 +22,21 @@ export const Calculator = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    const ctx = gsap.context(() => {
+      // Background glow pulse
+      gsap.to('.calc-glow', {
+        opacity: 0.4,
+        scale: 1.2,
+        duration: 3,
+        repeat: -1,
+        yoyo: true,
+        ease: 'sine.inOut'
+      });
+    }, sectionRef);
+    return () => ctx.revert();
+  }, []);
+
+  useEffect(() => {
     const basePrice = (ceilingPrices[type] || 500) * area;
     const lightsPrice = lights * 450;
     const cornersPrice = Math.max(0, corners - 4) * 200;
