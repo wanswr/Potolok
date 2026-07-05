@@ -116,7 +116,7 @@ export const Portfolio = () => {
                   {project.title}
                 </h3>
 
-                <button className="bg-white/10 backdrop-blur-md border border-white/20 text-white px-8 py-4 rounded-full font-bold opacity-0 group-hover:opacity-100 transition-all transform translate-y-4 group-hover:translate-y-0 w-fit">
+                <button className="bg-white/10 backdrop-blur-md border border-white/20 text-white px-8 py-4 rounded-full font-bold w-fit">
                   Подробнее о проекте
                 </button>
               </div>

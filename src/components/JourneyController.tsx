@@ -76,25 +76,34 @@ export const JourneyController: React.FC<JourneyControllerProps> = ({ children }
 
         // --- SUB-ELEMENT SEQUENCING (High Fidelity) ---
         if (elements.length > 0) {
-          gsap.from(elements, {
-            y: 120,
-            opacity: 0,
-            filter: 'blur(20px)',
-            scale: 0.85,
-            rotationX: -15,
-            transformPerspective: 1000,
-            stagger: {
-              amount: 0.8,
-              from: 'start',
+          gsap.fromTo(elements,
+            {
+              y: 120,
+              opacity: 0,
+              filter: 'blur(20px)',
+              scale: 0.85,
+              rotationX: -15,
+              transformPerspective: 1000,
             },
-            ease: 'power3.out',
-            scrollTrigger: {
-              trigger: section,
-              start: isHero ? 'top top' : 'top 85%',
-              end: isHero ? '+=60%' : 'top 15%',
-              scrub: 1.5,
+            {
+              y: 0,
+              opacity: 1,
+              filter: 'blur(0px)',
+              scale: 1,
+              rotationX: 0,
+              stagger: {
+                amount: 0.8,
+                from: 'start',
+              },
+              ease: 'power3.out',
+              scrollTrigger: {
+                trigger: section,
+                start: isHero ? 'top top' : 'top 85%',
+                end: isHero ? '+=60%' : 'top 15%',
+                scrub: 1.5,
+              }
             }
-          });
+          );
         }
 
         // --- SECTION EXIT ---

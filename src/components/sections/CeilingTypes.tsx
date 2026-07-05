@@ -150,15 +150,15 @@ export const CeilingTypes = () => {
               </div>
 
               <div className="absolute inset-0 p-10 flex flex-col justify-end text-white">
-                <div className="mb-6 transform transition-transform duration-500 group-hover:-translate-y-2">
+                <div className="mb-6 transform transition-transform duration-500">
                   <div className="text-accent font-bold text-lg mb-2">{type.price}</div>
                   <h3 className="text-4xl font-bold mb-4">{type.title}</h3>
-                  <p className="text-white/70 text-lg leading-relaxed max-w-md opacity-0 group-hover:opacity-100 transition-opacity duration-500 hidden md:block">
+                  <p className="text-white/70 text-lg leading-relaxed max-w-md">
                     {type.description}
                   </p>
                 </div>
 
-                <div className="flex flex-wrap gap-2 mb-8 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
+                <div className="flex flex-wrap gap-2 mb-8">
                   {type.features.map((feature, i) => (
                     <span key={i} className="px-4 py-2 bg-white/10 backdrop-blur-md rounded-full text-sm border border-white/10">
                       {feature}
