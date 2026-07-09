@@ -9,6 +9,7 @@ import ProcessScene from "./ProcessScene";
 import PortfolioScene from "./PortfolioScene";
 import TrustScene from "./TrustScene";
 import ContactScene from "./ContactScene";
+import { PartnersScene } from "./PartnersScene";
 import Lenis from "lenis";
 import gsap from "@/lib/gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -79,6 +80,9 @@ export default function SceneManager() {
       </section>
       <section id="portfolio">
         <PortfolioScene />
+      </section>
+      <section id="partners">
+        <PartnersScene />
       </section>
       <section id="trust">
         <TrustScene />

@@ -3,6 +3,7 @@
 import { useRef, useEffect } from "react";
 import gsap from "@/lib/gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { TextHighlighter } from "../ui/TextHighlighter";
 
 const STATS = [
   { label: "Лет опыта", value: "12+", description: "Создаем потолки с 2012 года" },
@@ -12,7 +13,6 @@ const STATS = [
 
 export default function TrustScene() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const statsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!containerRef.current) return;
@@ -37,7 +37,15 @@ export default function TrustScene() {
   return (
     <section ref={containerRef} className="relative py-32 bg-graphite border-y border-warm-white/5">
       <div className="container mx-auto px-6">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-16 md:gap-8">
+        <div className="mb-24 flex justify-center text-center">
+          <TextHighlighter
+            text="Мы не просто устанавливаем потолки. Мы создаем архитектурную среду, где каждый узел примыкания и каждый луч света выверен до миллиметра."
+            className="text-3xl md:text-5xl font-light max-w-5xl leading-tight justify-center"
+            highlightClassName="text-warm-white"
+          />
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-16 md:gap-8 mt-20">
           {STATS.map((stat, i) => (
             <div key={i} className="stat-item flex flex-col items-center text-center">
               <span className="text-muted-gold text-sm tracking-[0.3em] uppercase mb-6">{stat.label}</span>

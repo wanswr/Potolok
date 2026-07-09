@@ -34,6 +34,12 @@ export const MOTION_CONFIG = {
     }
   },
 
+  transitions: {
+    slow: { duration: 1.2, ease: "circOut" },
+    medium: { duration: 0.8, ease: "circOut" },
+    fast: { duration: 0.4, ease: "circOut" },
+  },
+
   theme: {
     colors: {
       background: '#FDFCFB',

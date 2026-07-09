@@ -9,28 +9,28 @@ const states = [
   {
     id: 'standard',
     title: 'Классика',
-    desc: 'Идеально ровное белое полотно.',
+    desc: 'Идеально ровное полотно. Забываете о трещинах и швах навсегда.',
     image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=2070&auto=format&fit=crop',
     overlay: null,
   },
   {
     id: 'shadow',
-    title: 'Теневой профиль',
-    desc: 'Эстетичный зазор между стеной и потолком.',
+    title: 'Теневой профиль EuroKraab',
+    desc: 'Никаких пластиковых плинтусов. Идеально ровный зазор 6мм для современного интерьера.',
     image: 'https://images.unsplash.com/photo-1600607687644-c7171b42498f?q=80&w=2070&auto=format&fit=crop',
     accentColor: '#1C1C1C',
   },
   {
     id: 'floating',
     title: 'Парящий потолок',
-    desc: 'Мягкий свет по периметру создает эффект невесомости.',
+    desc: 'Свет, который меняет пространство. Визуально расширяет комнату и скрывает карнизы.',
     image: 'https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?q=80&w=2070&auto=format&fit=crop',
     accentColor: '#C5A059',
   },
   {
     id: 'lines',
     title: 'Световые линии',
-    desc: 'Графичное освещение как элемент дизайна.',
+    desc: 'Основное освещение без громоздких люстр. Масштабируемая система под ваш сценарий жизни.',
     image: 'https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?q=80&w=2070&auto=format&fit=crop',
     accentColor: '#FFFFFF',
   }
@@ -130,10 +130,10 @@ export const CeilingTypesScene = () => {
 
           <div className="mt-8 flex gap-6">
              <button className="text-accent font-bold uppercase tracking-widest text-xs border-b border-accent/20 pb-2 hover:border-accent transition-colors">
-               Технические детали
+               Кейсы с этим решением
              </button>
              <button className="text-foreground/40 font-bold uppercase tracking-widest text-xs border-b border-transparent pb-2 hover:text-foreground transition-colors">
-               Стоимость решения
+               Рассчитать проект
              </button>
           </div>
         </div>

@@ -69,15 +69,25 @@ export const MaterialScene = () => {
       </div>
 
       <div className="relative z-10 h-full flex flex-col items-center justify-center text-center px-6 pointer-events-none">
-        <div ref={textRef} className="max-w-3xl">
-          <h2 className="text-4xl md:text-7xl font-bold tracking-tight text-white mb-6">
-             Безупречная <br />
-             <span className="text-accent italic">фактура</span>
+        <div ref={textRef} className="max-w-4xl">
+          <h2 className="text-4xl md:text-7xl font-bold tracking-tight text-white mb-8">
+             Экологичность <br />
+             <span className="text-accent italic">без компромиссов</span>
           </h2>
-          <p className="text-xl text-white/50 leading-relaxed">
-            Каждое полотно проходит 3 этапа контроля качества. <br />
-            Идеально ровная поверхность, созданная для игры света.
-          </p>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12 text-left">
+            <div className="bg-white/5 backdrop-blur-md p-6 border border-white/10 rounded-sm">
+              <span className="text-accent text-xs uppercase tracking-widest mb-4 block">01 / Безопасность</span>
+              <p className="text-sm text-white/70 leading-relaxed">Полное отсутствие запаха и вредных испарений. Сертификация MSD и Bauf для детских комнат.</p>
+            </div>
+            <div className="bg-white/5 backdrop-blur-md p-6 border border-white/10 rounded-sm">
+              <span className="text-accent text-xs uppercase tracking-widest mb-4 block">02 / Эстетика</span>
+              <p className="text-sm text-white/70 leading-relaxed">Безупречная матовая фактура, неотличимая от идеальной гипсокартонной отделки.</p>
+            </div>
+            <div className="bg-white/5 backdrop-blur-md p-6 border border-white/10 rounded-sm">
+              <span className="text-accent text-xs uppercase tracking-widest mb-4 block">03 / Долговечность</span>
+              <p className="text-sm text-white/70 leading-relaxed">Полотно не желтеет и не провисает со временем. Официальная гарантия до 15 лет.</p>
+            </div>
+          </div>
         </div>
       </div>
     </section>
