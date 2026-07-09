@@ -16,7 +16,7 @@ export const SceneManager: React.FC<SceneManagerProps> = ({ children }) => {
 
   useEffect(() => {
     const lenis = new Lenis({
-      duration: 1.5,
+      duration: 1.2,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
     });
 
@@ -36,8 +36,7 @@ export const SceneManager: React.FC<SceneManagerProps> = ({ children }) => {
       const scenes = gsap.utils.toArray<HTMLElement>('.journey-scene');
 
       scenes.forEach((scene, i) => {
-        const segmentHeight = 150;
-        const start = i * segmentHeight;
+        const start = i * 150; // Each scene starts after 150vh of scroll
 
         if (i === 0) {
           gsap.set(scene, { opacity: 1, autoAlpha: 1, visibility: 'visible' });
@@ -50,7 +49,7 @@ export const SceneManager: React.FC<SceneManagerProps> = ({ children }) => {
             autoAlpha: 1,
             visibility: 'visible',
             scrollTrigger: {
-              trigger: '#journey-wrapper',
+              trigger: '#journey-container',
               start: `${start}vh top`,
               end: `${start + 50}vh top`,
               scrub: true,
@@ -63,7 +62,7 @@ export const SceneManager: React.FC<SceneManagerProps> = ({ children }) => {
             autoAlpha: 0,
             visibility: 'hidden',
             scrollTrigger: {
-              trigger: '#journey-wrapper',
+              trigger: '#journey-container',
               start: `${start}vh top`,
               end: `${start + 50}vh top`,
               scrub: true,
@@ -80,17 +79,19 @@ export const SceneManager: React.FC<SceneManagerProps> = ({ children }) => {
   }, [children.length]);
 
   return (
-    <div className="fixed inset-0 w-full h-screen overflow-hidden bg-graphite z-0">
-      <div ref={containerRef} className="relative w-full h-full">
-        {React.Children.map(children, (child, index) => (
-          <div
-            key={index}
-            className="journey-scene absolute inset-0 w-full h-full"
-            style={{ zIndex: 10 + index }}
-          >
-            {child}
-          </div>
-        ))}
+    <div id="journey-container" className="relative w-full h-[1200vh]">
+      <div className="sticky top-0 w-full h-screen overflow-hidden bg-graphite">
+        <div ref={containerRef} className="relative w-full h-full">
+          {React.Children.map(children, (child, index) => (
+            <div
+              key={index}
+              className="journey-scene absolute inset-0 w-full h-full"
+              style={{ zIndex: 10 + index }}
+            >
+              {child}
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

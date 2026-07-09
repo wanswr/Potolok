@@ -14,7 +14,7 @@ export const LightScene = () => {
       // Light Story Timeline (Starts at 500vh)
       const tl = gsap.timeline({
         scrollTrigger: {
-          trigger: '#journey-wrapper',
+          trigger: '#journey-container',
           start: '450vh top',
           end: '600vh top',
           scrub: true,

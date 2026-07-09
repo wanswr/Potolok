@@ -13,7 +13,7 @@ export const MaterialScene = () => {
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({
         scrollTrigger: {
-          trigger: '#journey-wrapper',
+          trigger: '#journey-container',
           start: '150vh top',
           end: '300vh top',
           scrub: true,

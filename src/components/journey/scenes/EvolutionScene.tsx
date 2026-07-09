@@ -14,7 +14,7 @@ export const EvolutionScene = () => {
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({
         scrollTrigger: {
-          trigger: '#journey-wrapper',
+          trigger: '#journey-container',
           start: '300vh top',
           end: '450vh top',
           scrub: true,

@@ -11,7 +11,7 @@ export const FinalScene = () => {
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({
         scrollTrigger: {
-          trigger: '#journey-wrapper',
+          trigger: '#journey-container',
           start: '900vh top',
           end: '1050vh top',
           scrub: true,

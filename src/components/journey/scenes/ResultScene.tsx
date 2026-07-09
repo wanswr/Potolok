@@ -26,7 +26,7 @@ export const ResultScene = () => {
       // Horizontal Gallery Timeline (Starts at 850vh)
       const tl = gsap.timeline({
         scrollTrigger: {
-          trigger: '#journey-wrapper',
+          trigger: '#journey-container',
           start: '750vh top',
           end: '900vh top',
           scrub: true,

@@ -15,7 +15,7 @@ export const ProcessScene = () => {
       // Process Timeline (Starts at 700vh)
       const tl = gsap.timeline({
         scrollTrigger: {
-          trigger: '#journey-wrapper',
+          trigger: '#journey-container',
           start: '600vh top',
           end: '750vh top',
           scrub: true,

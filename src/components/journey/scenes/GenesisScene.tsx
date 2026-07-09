@@ -13,7 +13,7 @@ export const GenesisScene = () => {
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({
         scrollTrigger: {
-          trigger: '#journey-wrapper',
+          trigger: '#journey-container',
           start: '0 top',
           end: '150vh top',
           scrub: true,
@@ -37,7 +37,13 @@ export const GenesisScene = () => {
   return (
     <section ref={sectionRef} className="absolute inset-0 w-full h-full flex items-center justify-center bg-graphite overflow-hidden">
       <div ref={bgRef} className="absolute inset-0 w-full h-full">
-        <Image src="https://images.unsplash.com/photo-1600607687940-47a0f68d69ce?q=80\&w=2070\&auto=format\&fit=crop" alt="Genesis" fill priority className="object-cover" />
+        <Image
+          src="https://images.unsplash.com/photo-1600607687940-47a0f68d69ce?q=80&w=2070&auto=format&fit=crop"
+          alt="Genesis"
+          fill
+          priority
+          className="object-cover"
+        />
         <div className="absolute inset-0 bg-black/40" />
       </div>
       <div ref={contentRef} className="relative z-10 text-center px-6">
