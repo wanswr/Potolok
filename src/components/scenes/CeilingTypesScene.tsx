@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
-import gsap from 'gsap';
+import gsap from '@/lib/gsap';
 import { MOTION_CONFIG } from '@/lib/motion-config';
 
 const states = [

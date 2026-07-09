@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useEffect } from "react";
-import gsap from "gsap";
+import gsap from "@/lib/gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Image from "next/image";
 

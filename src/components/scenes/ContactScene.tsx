@@ -65,7 +65,6 @@ export default function ContactScene() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Submit form:", formData);
     // Logic for API call here
     alert("Спасибо! Мы свяжемся с вами в ближайшее время.");
   };

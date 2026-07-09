@@ -1,7 +1,7 @@
 "use client";
 
-import { useRef, useEffect } from "react";
-import gsap from "gsap";
+import { useRef, useEffect, useLayoutEffect } from "react";
+import gsap from "@/lib/gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Image from "next/image";
 
@@ -11,7 +11,7 @@ const PROJECTS = [
     title: "Minimalist Loft",
     type: "Теневой профиль EuroKraab",
     location: "ЖК 'Сердце Столицы'",
-    image: "/images/room-classic.jpg", // Using existing placeholder
+    image: "/images/room-classic.jpg",
   },
   {
     id: 2,
@@ -33,23 +33,25 @@ export default function PortfolioScene() {
   const containerRef = useRef<HTMLDivElement>(null);
   const galleryRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!containerRef.current || !galleryRef.current) return;
 
     const ctx = gsap.context(() => {
-      const galleryWidth = galleryRef.current?.scrollWidth || 0;
-      const windowWidth = window.innerWidth;
+      // Calculate the horizontal travel distance
+      const getGalleryWidth = () => galleryRef.current?.scrollWidth || 0;
+      const getWindowWidth = () => window.innerWidth;
 
       const portfolioTween = gsap.to(galleryRef.current, {
-        x: -(galleryWidth - windowWidth),
+        x: () => -(getGalleryWidth() - getWindowWidth()),
         ease: "none",
         scrollTrigger: {
           trigger: containerRef.current,
           start: "top top",
-          end: () => `+=${galleryWidth}`,
+          end: () => `+=${getGalleryWidth()}`,
           scrub: 1,
           pin: true,
           anticipatePin: 1,
+          invalidateOnRefresh: true,
         },
       });
 
@@ -62,6 +64,7 @@ export default function PortfolioScene() {
             trigger: img,
             containerAnimation: portfolioTween,
             scrub: true,
+            invalidateOnRefresh: true,
           }
         });
       });
@@ -80,7 +83,6 @@ export default function PortfolioScene() {
       <div
         ref={galleryRef}
         className="flex h-full items-center pl-12 gap-24 whitespace-nowrap"
-        style={{ width: `${PROJECTS.length * 80}vw` }}
       >
         {PROJECTS.map((project) => (
           <div
@@ -108,8 +110,7 @@ export default function PortfolioScene() {
           </div>
         ))}
 
-        {/* Placeholder for "See more" or transition to next section */}
-        <div className="w-[30vw] h-full flex items-center justify-center">
+        <div className="w-[30vw] h-full flex items-center justify-center flex-shrink-0">
            <button className="text-muted-gold text-xl border-b border-muted-gold/30 pb-2 hover:text-warm-white transition-colors">
              Смотреть все проекты
            </button>
