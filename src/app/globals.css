@@ -1,57 +1,85 @@
 @import "tailwindcss";
 
 @theme {
-  --color-background: #FFFFFF;
-  --color-foreground: #1A1A1A;
-  --color-accent: #0066FF;
-  --color-accent-dark: #0052CC;
-  --color-gray-soft: #F5F5F7;
-  --color-gray-border: #E5E5E7;
+  --color-background: #FDFCFB;
+  --color-foreground: #121212;
+  --color-accent: #C5A059;
+  --color-accent-dark: #A68546;
+  --color-gray-soft: #F2F2F7;
+  --color-gray-border: #D1D1D6;
+  --color-graphite: #1C1C1C;
+  --color-stone: #8E8E93;
+  --color-bronze: #8E6E53;
+  --color-deep-black: #0A0A0A;
 }
 
 :root {
-  --background: #FFFFFF;
-  --foreground: #1A1A1A;
+  --background: #FDFCFB;
+  --foreground: #121212;
 }
 
 body {
   color: var(--foreground);
   background: var(--background);
+  font-family: 'Inter', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 .glass-morphism {
-  background: rgba(255, 255, 255, 0.7);
+  background: rgba(253, 252, 251, 0.7);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.03);
 }
 
 .section-padding {
-  padding-top: 5rem;
-  padding-bottom: 5rem;
+  padding-top: 6rem;
+  padding-bottom: 6rem;
 }
 
 @media (min-width: 768px) {
   .section-padding {
-    padding-top: 10rem;
-    padding-bottom: 10rem;
+    padding-top: 12rem;
+    padding-bottom: 12rem;
   }
 }
 
-/* Custom Scrollbar */
+/* Custom Scrollbar - Minimal Apple Style */
 ::-webkit-scrollbar {
-  width: 10px;
+  width: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #c1c1c1;
-  border-radius: 5px;
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #a8a8a8;
+  background: rgba(0, 0, 0, 0.2);
+}
+
+/* GSAP Smooth Scroll Helper */
+html.lenis {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
 }
