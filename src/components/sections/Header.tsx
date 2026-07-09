@@ -1,81 +1,52 @@
 'use client';
 
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Menu, X, Phone } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const navLinks = [
-  { name: 'Преимущества', href: '#features' },
-  { name: 'Виды потолков', href: '#types' },
-  { name: 'Калькулятор', href: '#calculator' },
-  { name: 'Наши работы', href: '#portfolio' },
-  { name: 'Отзывы', href: '#reviews' },
+  { name: 'Материя', href: '#material' },
+  { name: 'Эволюция', href: '#evolution' },
+  { name: 'Свет', href: '#light' },
+  { name: 'Проекты', href: '#projects' },
   { name: 'Контакты', href: '#contacts' },
 ];
 
 export const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const headerRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
-    let lastValue = false;
-    let ticking = false;
-
-    const update = () => {
-      const shouldBeScrolled = window.scrollY > 20;
-
-      if (shouldBeScrolled !== lastValue) {
-        lastValue = shouldBeScrolled;
-        setIsScrolled(shouldBeScrolled);
-      }
-
-      ticking = false;
-    };
-
     const handleScroll = () => {
-      if (!ticking) {
-        requestAnimationFrame(update);
-        ticking = true;
-      }
+      setIsScrolled(window.scrollY > 50);
     };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-
+    window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   return (
     <header
-      ref={headerRef}
       className={cn(
-        "fixed top-0 left-0 w-full z-50 transition-all duration-700",
+        "fixed top-0 left-0 w-full z-[100] transition-all duration-500",
         isScrolled
-          ? "bg-white/90 backdrop-blur-xl py-3 shadow-sm border-b border-black/5"
+          ? "bg-graphite/80 backdrop-blur-md py-4 border-b border-white/5"
           : "bg-transparent py-8"
       )}
     >
-      <div className="container mx-auto px-6 flex items-center justify-between">
-        <div className={cn(
-          "text-2xl font-bold tracking-tight transition-colors duration-500",
-          isScrolled ? "text-black" : "text-white"
-        )}>
-          Potolok<span className="text-accent">Bel</span>
+      <div className="container mx-auto px-6 md:px-10 flex items-center justify-between">
+        <div className="text-2xl font-bold tracking-tighter text-warm-white">
+          Potolok<span className="text-accent italic">Bel</span>
         </div>
 
         {/* Desktop Nav */}
-        <nav className={cn(
-          "hidden lg:flex items-center gap-8 text-[15px] font-medium transition-colors duration-500",
-          isScrolled ? "text-black/70" : "text-white/80"
-        )}>
+        <nav className="hidden lg:flex items-center gap-10 text-[13px] font-bold uppercase tracking-widest text-warm-white/60">
           {navLinks.map((link) => (
             <a
               key={link.name}
               href={link.href}
-              className="relative hover:text-accent transition-colors group py-2"
+              className="hover:text-warm-white transition-colors"
             >
               {link.name}
-              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-accent transition-all duration-300 group-hover:w-full" />
             </a>
           ))}
         </nav>
@@ -83,23 +54,20 @@ export const Header = () => {
         <div className="hidden md:flex items-center gap-8">
           <a
             href="tel:+79990000000"
-            className={cn(
-              "font-semibold flex items-center gap-2 text-[15px] transition-colors duration-500",
-              isScrolled ? "text-black" : "text-white"
-            )}
+            className="text-warm-white font-medium flex items-center gap-2 text-sm"
           >
-            <Phone className="w-4 h-4 text-accent" />
+            <Phone className="w-3 h-3 text-accent" />
             +7 (999) 000-00-00
           </a>
 
-          <button className="bg-accent hover:bg-accent-dark text-white px-6 py-2.5 rounded-full font-semibold transition-all shadow-lg shadow-accent/10 text-[14px]">
-            Рассчитать стоимость
+          <button className="bg-warm-white text-graphite px-8 py-3 rounded-full font-bold text-xs uppercase tracking-widest transition-transform hover:scale-105">
+            Консультация
           </button>
         </div>
 
         {/* Mobile Toggle */}
         <button
-          className={cn("lg:hidden p-2 transition-colors duration-500", isScrolled ? "text-black" : "text-white")}
+          className="lg:hidden p-2 text-warm-white"
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
         >
           {isMobileMenuOpen ? <X /> : <Menu />}
@@ -108,23 +76,23 @@ export const Header = () => {
 
       {/* Mobile Menu */}
       <div className={cn(
-        "fixed inset-0 bg-white z-[60] flex flex-col p-10 transition-transform duration-500 lg:hidden",
+        "fixed inset-0 bg-graphite z-[110] flex flex-col p-10 transition-transform duration-500 lg:hidden",
         isMobileMenuOpen ? "translate-x-0" : "translate-x-full"
       )}>
         <div className="flex justify-between items-center mb-12">
-          <div className="text-2xl font-bold tracking-tight text-black">
-            Potolok<span className="text-accent">Bel</span>
+          <div className="text-2xl font-bold tracking-tighter text-warm-white">
+            Potolok<span className="text-accent italic">Bel</span>
           </div>
 
           <button
-            className="p-2 text-black"
+            className="p-2 text-warm-white"
             onClick={() => setIsMobileMenuOpen(false)}
           >
             <X size={28} />
           </button>
         </div>
 
-        <nav className="flex flex-col gap-6 text-xl font-semibold text-black">
+        <nav className="flex flex-col gap-8 text-3xl font-bold text-warm-white">
           {navLinks.map((link) => (
             <a
               key={link.name}
@@ -136,12 +104,11 @@ export const Header = () => {
           ))}
         </nav>
 
-        <div className="mt-auto flex flex-col gap-4">
-          <a href="tel:+79990000000" className="text-xl font-bold text-black">
+        <div className="mt-auto flex flex-col gap-6">
+          <a href="tel:+79990000000" className="text-2xl font-bold text-warm-white">
             +7 (999) 000-00-00
           </a>
-
-          <button className="bg-accent text-white py-4 rounded-xl font-bold">
+          <button className="bg-accent text-graphite py-5 rounded-full font-bold uppercase tracking-widest">
             Заказать замер
           </button>
         </div>
