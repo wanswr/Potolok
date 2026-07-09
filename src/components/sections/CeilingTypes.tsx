@@ -106,7 +106,7 @@ export const CeilingTypes = () => {
       id="types"
       ref={containerRef}
       data-journey-section="types"
-      className="section-padding bg-gray-soft relative z-10 rounded-t-[60px] -mt-20"
+      className="section-padding bg-[#0a0a0c] text-white relative z-10 rounded-t-[80px] -mt-20 shadow-[0_-20px_100px_rgba(0,0,0,0.9)]"
     >
       <div className="container mx-auto px-6">
         <div className="types-header flex flex-col md:flex-row md:items-end justify-between mb-20 gap-8">
@@ -115,7 +115,7 @@ export const CeilingTypes = () => {
               Виды <br />
               <span className="text-accent">потолков</span>
             </h2>
-            <p data-journey-element className="text-xl text-black/60">
+            <p data-journey-element className="text-xl text-white/40">
               Подберем идеальное решение под ваш бюджет и интерьер.
               От классики до ультрасовременных световых решений.
             </p>
@@ -123,7 +123,7 @@ export const CeilingTypes = () => {
 
           <button data-journey-element className="hidden md:flex items-center gap-3 text-lg font-bold group">
             Смотреть все виды
-            <div className="w-12 h-12 rounded-full border border-black/10 flex items-center justify-center group-hover:bg-black group-hover:text-white transition-all">
+            <div className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center group-hover:bg-accent group-hover:border-accent transition-all">
               <ArrowRight size={20} />
             </div>
           </button>

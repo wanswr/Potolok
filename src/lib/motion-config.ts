@@ -1,88 +1,91 @@
 /**
- * PotolokBel Journey Motion Configuration
- * Centralized settings for scroll-driven animations and section behavior.
+ * PotolokBel Premium 3D Motion Configuration
+ * Drives the high-fidelity Apple-style "Journey" experience.
  */
 
 export const MOTION_CONFIG = {
   global: {
-    smoothScrollDuration: 1.6,
+    smoothScrollDuration: 1.8,
     scrub: 1.5,
-    ease: 'power3.inOut',
-    atmosphereOpacity: 0.05,
-    staggerAmount: 0.8,
+    perspective: 2500, // Deep perspective for 3D feel
+    atmosphereOpacity: 0.08,
+    staggerAmount: 1.2,
+    canvasParallax: 0.1, // Reactivity to mouse/scroll
   },
 
   sections: {
     hero: {
       flightDuration: '150%',
-      zoomScale: 1.4,
-      tiltY: 30,
-      lightOpacity: 0.8,
+      zoomScale: 1.5,
+      tiltY: 35,
+      lightOpacity: 0.9,
     },
     features: {
-      entranceY: '20vh',
-      scale: 0.9,
-      blur: 15,
-      pinDuration: '+=100%',
+      entranceY: '40vh',
+      entranceRotateX: -25,
+      scale: 0.85,
+      pinDuration: '+=120%',
       backgroundColor: '#050505',
     },
     types: {
-      entranceY: '25vh',
-      perspective: 2000,
-      rotationX: -10,
-      pinDuration: '+=120%',
+      entranceY: '45vh',
+      entranceRotateX: -30,
+      perspective: 3000,
+      pinDuration: '+=150%',
       backgroundColor: '#0a0a0c',
     },
     calculator: {
-      entranceY: '15vh',
-      glowScale: 1.3,
-      pinDuration: '+=80%',
+      entranceY: '30vh',
+      entranceRotateX: -20,
+      pinDuration: '+=100%',
       backgroundColor: '#050505',
     },
     portfolio: {
-      entranceY: '20vh',
-      parallaxAmount: 15,
-      pinDuration: '+=100%',
+      entranceY: '35vh',
+      entranceRotateX: -25,
+      pinDuration: '+=130%',
       backgroundColor: '#08080a',
     },
     timeline: {
-      entranceY: '15vh',
-      progressStart: 'top 50%',
-      progressEnd: 'bottom 50%',
-      pinDuration: '+=150%',
+      entranceY: '30vh',
+      entranceRotateX: -20,
+      pinDuration: '+=180%',
       backgroundColor: '#050505',
     },
     reviews: {
-      entranceY: '15vh',
-      stagger: 0.2,
-      pinDuration: '+=80%',
+      entranceY: '25vh',
+      entranceRotateX: -15,
+      pinDuration: '+=100%',
       backgroundColor: '#08080a',
     },
     faq: {
-      entranceY: '10vh',
-      pinDuration: '+=60%',
+      entranceY: '20vh',
+      entranceRotateX: -10,
+      pinDuration: '+=80%',
       backgroundColor: '#050505',
     },
     contacts: {
-      entranceY: '20vh',
-      glowX: '30%',
-      glowY: '-20%',
+      entranceY: '35vh',
+      entranceRotateX: -25,
       backgroundColor: '#000000',
     }
   },
 
   elements: {
     reveal: {
-      y: 120,
-      scale: 0.85,
-      rotationX: -15,
-      blur: 20,
+      y: 150,
+      z: 200, // Move forward from depth
+      scale: 0.8,
+      rotationX: -20,
+      blur: 30,
     },
     exit: {
-      opacity: 0.2,
-      scale: 0.9,
-      y: '-15vh',
-      blur: 25,
+      opacity: 0.1,
+      scale: 0.8,
+      y: '-20vh',
+      z: -300, // Sink into background
+      rotationX: 15,
+      blur: 40,
     }
   }
 };

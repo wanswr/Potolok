@@ -45,20 +45,20 @@ export const TrustBlock = () => {
       id="features"
       ref={sectionRef}
       data-journey-section="features"
-      className="section-padding bg-white overflow-hidden rounded-t-[60px] relative z-20 -mt-20"
+      className="section-padding bg-black overflow-hidden rounded-t-[80px] relative z-20 -mt-20 shadow-[0_-20px_100px_rgba(0,0,0,0.8)]"
     >
       <div className="container mx-auto px-6">
         <div className="max-w-3xl mb-20">
           <h2
             ref={titleRef}
             data-journey-element
-            className="text-4xl md:text-6xl font-bold tracking-tight mb-8"
+            className="text-4xl md:text-7xl font-bold tracking-tight mb-8 text-white"
           >
             Почему выбирают <br />
             <span className="text-accent">PotolokBel</span>
           </h2>
 
-          <p data-journey-element className="text-xl text-black/60 leading-relaxed">
+          <p data-journey-element className="text-xl text-white/40 leading-relaxed max-w-2xl">
             Мы объединили премиальный сервис, лучшие материалы и профессиональный подход,
             чтобы вы наслаждались результатом долгие годы.
           </p>
@@ -67,21 +67,21 @@ export const TrustBlock = () => {
         <div
           ref={cardsRef}
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-          style={{ perspective: '2000px' }}
+          style={{ perspective: '3000px' }}
         >
           {benefits.map((benefit, index) => (
             <div
               key={index}
               data-journey-element
-              className="group p-8 rounded-[32px] bg-gray-soft border border-gray-border hover:bg-white hover:shadow-2xl hover:shadow-black/10 transition-all duration-500 hover:-translate-y-4 hover:rotate-1"
+              className="group p-8 rounded-[32px] bg-white/5 backdrop-blur-xl border border-white/10 hover:bg-white/10 hover:shadow-[0_0_50px_rgba(0,102,255,0.15)] transition-all duration-500 hover:-translate-y-6 hover:rotate-2 hover:scale-[1.02] transform-gpu"
             >
               <div className="w-14 h-14 rounded-2xl bg-white flex items-center justify-center mb-8 shadow-sm group-hover:scale-110 group-hover:bg-accent group-hover:text-white transition-all duration-500">
                 <benefit.icon className="w-7 h-7 text-accent group-hover:text-white transition-colors" />
               </div>
 
-              <h3 className="text-2xl font-bold mb-4">{benefit.title}</h3>
+              <h3 className="text-2xl font-bold mb-4 text-white">{benefit.title}</h3>
 
-              <p className="text-black/50 leading-relaxed text-[15px]">
+              <p className="text-white/40 leading-relaxed text-[15px]">
                 {benefit.description}
               </p>
             </div>
