@@ -4,6 +4,12 @@ import { useEffect, useRef, useState } from "react";
 import { HeroScene } from "./HeroScene";
 import { MaterialScene } from "./MaterialScene";
 import { CeilingTypesScene } from "./CeilingTypesScene";
+import { ServicesGrid } from "./ServicesGrid";
+import { DesignerScene } from "./DesignerScene";
+import { CasesScene } from "./CasesScene";
+import { AdvantagesScene } from "./AdvantagesScene";
+import { SocialProofScene } from "./SocialProofScene";
+import { PainSolutionScene } from "./PainSolutionScene";
 import LightScene from "./LightScene";
 import ProcessScene from "./ProcessScene";
 import PortfolioScene from "./PortfolioScene";
@@ -66,18 +72,24 @@ export default function SceneManager() {
       <section id="hero">
         <HeroScene />
       </section>
+      <section id="pain"><PainSolutionScene /></section>
       <section id="material">
         <MaterialScene />
       </section>
       <section id="types">
         <CeilingTypesScene />
       </section>
+      <section id="services"><ServicesGrid /></section>
       <section id="light">
         <LightScene />
       </section>
+      <section id="advantages"><AdvantagesScene /></section>
+      <section id="social"><SocialProofScene /></section>
       <section id="process">
         <ProcessScene />
       </section>
+      <section id="cases"><CasesScene /></section>
+      <section id="designer"><DesignerScene /></section>
       <section id="portfolio">
         <PortfolioScene />
       </section>

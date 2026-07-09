@@ -1,117 +1,128 @@
 "use client";
 
-import { useRef, useEffect, useLayoutEffect } from "react";
+import { useRef, useEffect, useState } from "react";
+import Image from "next/image";
 import gsap from "@/lib/gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import Image from "next/image";
+import { motion, AnimatePresence } from "framer-motion";
+
+const CATEGORIES = ["Все", "Квартиры", "Дома", "Дизайнерские", "Коммерция"];
 
 const PROJECTS = [
   {
-    id: 1,
-    title: "Minimalist Loft",
-    type: "Теневой профиль EuroKraab",
-    location: "ЖК 'Сердце Столицы'",
-    image: "/images/room-classic.jpg",
+    title: "Современная квартира 85 м²",
+    category: "Квартиры",
+    location: "Москва, ЖК Символ",
+    type: "Теневой потолок EuroKraab",
+    time: "3 дня",
+    features: "Интегрированные треки Centrsvet",
+    img: "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?q=80&w=2070&auto=format&fit=crop"
   },
   {
-    id: 2,
-    title: "Modern Residence",
-    type: "Световые линии Flexy",
-    location: "КП 'Миллениум Парк'",
-    image: "/images/room-classic.jpg",
+    title: "Загородная резиденция",
+    category: "Дома",
+    location: "Миллениум Парк",
+    type: "Парящие потолки",
+    time: "10 дней",
+    features: "Скрытые карнизы с электроприводом",
+    img: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=2070&auto=format&fit=crop"
   },
   {
-    id: 3,
-    title: "Executive Office",
-    type: "Парящий потолок с подсветкой",
-    location: "БЦ 'Москва Сити'",
-    image: "/images/room-classic.jpg",
+    title: "Бутик-отель 'Sky'",
+    category: "Коммерция",
+    location: "Санкт-Петербург",
+    type: "Световые панели",
+    time: "14 дней",
+    features: "Акустические полотна Clipso",
+    img: "https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=2069&auto=format&fit=crop"
+  },
+  {
+    title: "Дизайнерский лофт",
+    category: "Дизайнерские",
+    location: "Artplay",
+    type: "Бесщелевые системы",
+    time: "5 дней",
+    features: "Сложная геометрия освещения",
+    img: "https://images.unsplash.com/photo-1600607687644-c7171b42498f?q=80&w=2070&auto=format&fit=crop"
   }
 ];
 
 export default function PortfolioScene() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const galleryRef = useRef<HTMLDivElement>(null);
+  const [activeCategory, setActiveCategory] = useState("Все");
 
-  useLayoutEffect(() => {
-    if (!containerRef.current || !galleryRef.current) return;
-
-    const ctx = gsap.context(() => {
-      // Calculate the horizontal travel distance
-      const getGalleryWidth = () => galleryRef.current?.scrollWidth || 0;
-      const getWindowWidth = () => window.innerWidth;
-
-      const portfolioTween = gsap.to(galleryRef.current, {
-        x: () => -(getGalleryWidth() - getWindowWidth()),
-        ease: "none",
-        scrollTrigger: {
-          trigger: containerRef.current,
-          start: "top top",
-          end: () => `+=${getGalleryWidth()}`,
-          scrub: 1,
-          pin: true,
-          anticipatePin: 1,
-          invalidateOnRefresh: true,
-        },
-      });
-
-      // Parallax effect for images
-      gsap.utils.toArray(".portfolio-image").forEach((img: any) => {
-        gsap.to(img, {
-          x: -100,
-          ease: "none",
-          scrollTrigger: {
-            trigger: img,
-            containerAnimation: portfolioTween,
-            scrub: true,
-            invalidateOnRefresh: true,
-          }
-        });
-      });
-    }, containerRef);
-
-    return () => ctx.revert();
-  }, []);
+  const filteredProjects = activeCategory === "Все"
+    ? PROJECTS
+    : PROJECTS.filter(p => p.category === activeCategory);
 
   return (
-    <section ref={containerRef} className="relative h-screen w-full bg-graphite overflow-hidden">
-      <div className="absolute top-12 left-12 z-10">
-        <span className="text-muted-gold text-sm tracking-[0.3em] uppercase mb-4 block">Галерея проектов</span>
-        <h2 className="text-5xl font-light text-warm-white">Избранные объекты</h2>
-      </div>
-
-      <div
-        ref={galleryRef}
-        className="flex h-full items-center pl-12 gap-24 whitespace-nowrap"
-      >
-        {PROJECTS.map((project) => (
-          <div
-            key={project.id}
-            className="relative w-[70vw] h-[70vh] flex-shrink-0 group"
-          >
-            <div className="relative w-full h-full overflow-hidden">
-              <Image
-                src={project.image}
-                alt={project.title}
-                fill
-                className="portfolio-image object-cover transition-transform duration-700 group-hover:scale-105"
-              />
-              <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors duration-500" />
-            </div>
-
-            <div className="absolute bottom-[-4rem] left-0 text-warm-white flex flex-col gap-2">
-              <h3 className="text-3xl font-light tracking-wide">{project.title}</h3>
-              <div className="flex items-center gap-4 text-stone text-sm uppercase tracking-widest">
-                <span>{project.type}</span>
-                <span className="w-8 h-[1px] bg-muted-gold" />
-                <span>{project.location}</span>
-              </div>
-            </div>
+    <section ref={containerRef} className="relative py-32 bg-graphite overflow-hidden">
+      <div className="container mx-auto px-6">
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-20 gap-8">
+          <div>
+            <span className="text-muted-gold text-[10px] uppercase tracking-[0.4em] font-bold mb-6 block">Портфолио</span>
+            <h2 className="text-4xl md:text-7xl font-extralight text-warm-white">Реализованные <br /> объекты</h2>
           </div>
-        ))}
 
-        <div className="w-[30vw] h-full flex items-center justify-center flex-shrink-0">
-           <button className="text-muted-gold text-xl border-b border-muted-gold/30 pb-2 hover:text-warm-white transition-colors">
+          <div className="flex flex-wrap gap-4 md:gap-8 pb-4">
+            {CATEGORIES.map((cat) => (
+              <button
+                key={cat}
+                onClick={() => setActiveCategory(cat)}
+                className={`text-[10px] uppercase tracking-[0.3em] font-bold transition-all border-b-2 pb-2
+                  ${activeCategory === cat ? "text-muted-gold border-muted-gold" : "text-stone border-transparent hover:text-warm-white"}`}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
+          <AnimatePresence mode="popLayout">
+            {filteredProjects.map((project, i) => (
+              <motion.div
+                key={project.title}
+                layout
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                transition={{ duration: 0.6, ease: "circOut" }}
+                className="group cursor-pointer"
+              >
+                <div className="relative aspect-[16/10] overflow-hidden rounded-sm mb-10 border border-warm-white/5">
+                  <Image
+                    src={project.img}
+                    alt={project.title}
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-1000"
+                  />
+                  <div className="absolute inset-0 bg-graphite opacity-0 group-hover:opacity-20 transition-opacity duration-700" />
+                </div>
+
+                <div className="flex flex-col md:flex-row justify-between gap-6">
+                  <div>
+                    <h3 className="text-2xl md:text-3xl font-light text-warm-white mb-4 group-hover:text-muted-gold transition-colors">
+                      {project.title}
+                    </h3>
+                    <p className="text-stone text-sm uppercase tracking-widest">{project.location}</p>
+                  </div>
+                  <div className="flex flex-col gap-2 text-right">
+                    <span className="text-muted-gold text-xs uppercase tracking-widest font-bold">{project.type}</span>
+                    <span className="text-stone text-[10px] uppercase tracking-widest">{project.time}</span>
+                  </div>
+                </div>
+
+                <div className="mt-8 pt-8 border-t border-warm-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                  <p className="text-stone text-sm italic font-light">Особенности: {project.features}</p>
+                </div>
+              </motion.div>
+            ))}
+          </AnimatePresence>
+        </div>
+
+        <div className="mt-24 flex justify-center">
+           <button className="group relative bg-transparent border border-muted-gold text-muted-gold px-12 py-5 rounded-full text-[10px] font-bold uppercase tracking-[0.3em] overflow-hidden transition-all hover:bg-muted-gold hover:text-graphite">
              Смотреть все проекты
            </button>
         </div>
