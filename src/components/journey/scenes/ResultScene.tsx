@@ -27,8 +27,8 @@ export const ResultScene = () => {
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: '#journey-wrapper',
-          start: '850vh top',
-          end: '1050vh top',
+          start: '750vh top',
+          end: '900vh top',
           scrub: true,
         }
       });

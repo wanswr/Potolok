@@ -15,8 +15,8 @@ export const LightScene = () => {
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: '#journey-wrapper',
-          start: '500vh top',
-          end: '700vh top',
+          start: '450vh top',
+          end: '600vh top',
           scrub: true,
         }
       });

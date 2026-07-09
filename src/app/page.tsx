@@ -10,7 +10,13 @@ import { Header } from "@/components/sections/Header";
 
 export default function Home() {
   return (
-    <main id="journey-wrapper" className="relative min-h-screen bg-graphite">
+    <main id="journey-wrapper" className="relative bg-graphite">
+      {/*
+          Main Wrapper height is 1050vh (7 scenes * 150vh)
+          We add some extra buffer to ensure the last scene is fully visible.
+      */}
+      <div className="h-[1200vh] pointer-events-none" />
+
       <Header />
 
       <SceneManager>
@@ -22,8 +28,6 @@ export default function Home() {
         <ResultScene />
         <FinalScene />
       </SceneManager>
-
-      <div className="h-[1200vh] pointer-events-none" />
     </main>
   );
 }

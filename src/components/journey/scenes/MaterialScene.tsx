@@ -11,13 +11,11 @@ export const MaterialScene = () => {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Material Story Timeline
-      // This scene should activate after Genesis (which is 100vh)
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: '#journey-wrapper',
-          start: '100vh top',
-          end: '220vh top',
+          start: '150vh top',
+          end: '300vh top',
           scrub: true,
         }
       });
@@ -45,17 +43,11 @@ export const MaterialScene = () => {
           fill
           className="object-cover opacity-60"
         />
-        {/* Animated Light Sweep Overlay */}
-        <div
-          ref={lightRef}
-          className="absolute inset-0 bg-gradient-to-r from-transparent via-warm-white/10 to-transparent w-[200%] -skew-x-12"
-        />
+        <div ref={lightRef} className="absolute inset-0 bg-gradient-to-r from-transparent via-warm-white/10 to-transparent w-[200%] -skew-x-12" />
       </div>
 
       <div className="relative z-10 text-center px-6">
-        <h2 className="text-5xl md:text-8xl text-warm-white mb-8">
-          Материя качества
-        </h2>
+        <h2 className="text-5xl md:text-8xl text-warm-white mb-8">Материя качества</h2>
         <p className="text-xl md:text-2xl text-stone max-w-3xl mx-auto font-light leading-relaxed">
           Безупречно ровное полотно. <br />
           Мы используем только сертифицированные материалы <br />

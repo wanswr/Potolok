@@ -11,12 +11,11 @@ export const GenesisScene = () => {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Entrance Timeline (Scroll-triggered by SceneManager)
       const tl = gsap.timeline({
         scrollTrigger: {
-          trigger: sectionRef.current,
-          start: 'top top',
-          end: '+=100%',
+          trigger: '#journey-wrapper',
+          start: '0 top',
+          end: '150vh top',
           scrub: true,
         }
       });
@@ -38,23 +37,12 @@ export const GenesisScene = () => {
   return (
     <section ref={sectionRef} className="absolute inset-0 w-full h-full flex items-center justify-center bg-graphite overflow-hidden">
       <div ref={bgRef} className="absolute inset-0 w-full h-full">
-        <Image
-          src="https://images.unsplash.com/photo-1600607687940-47a0f68d69ce?q=80&w=2070&auto=format&fit=crop"
-          alt="Minimalist Architecture"
-          fill
-          priority
-          className="object-cover"
-        />
+        <Image src="https://images.unsplash.com/photo-1600607687940-47a0f68d69ce?q=80\&w=2070\&auto=format\&fit=crop" alt="Genesis" fill priority className="object-cover" />
         <div className="absolute inset-0 bg-black/40" />
       </div>
-
       <div ref={contentRef} className="relative z-10 text-center px-6">
-        <h1 className="text-6xl md:text-9xl text-warm-white mb-6">
-          Пространство <br /> начинается сверху
-        </h1>
-        <p className="text-xl md:text-2xl text-warm-white/60 max-w-2xl mx-auto font-light">
-          Архитектурные натяжные потолки как основа современного интерьера.
-        </p>
+        <h1 className="text-6xl md:text-9xl text-warm-white mb-6">Пространство <br /> начинается сверху</h1>
+        <p className="text-xl md:text-2xl text-warm-white/60 max-w-2xl mx-auto font-light">Архитектурные натяжные потолки как основа современного интерьера.</p>
       </div>
     </section>
   );
