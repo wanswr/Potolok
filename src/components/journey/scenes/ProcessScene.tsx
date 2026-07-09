@@ -1,20 +1,12 @@
 'use client';
 
 import React from 'react';
-import Image from 'next/image';
 
 export const ProcessScene = () => {
   return (
     <section className="relative w-full h-full bg-graphite overflow-hidden">
       <div className="absolute inset-0 w-full h-full">
-        <Image src="https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&q=80&w=2000" alt="Process" fill className="object-cover grayscale" />
-        <div className="absolute inset-0 bg-black/40" />
-      </div>
-      <div className="proc-layer absolute inset-0 w-full h-full opacity-0">
-        <Image src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?auto=format&fit=crop&q=80&w=2000" alt="Work" fill className="object-cover opacity-50" />
-      </div>
-      <div className="proc-layer absolute inset-0 w-full h-full opacity-0">
-        <Image src="https://images.unsplash.com/photo-1600607687644-c7171b42498f?auto=format&fit=crop&q=80&w=2000" alt="Result" fill className="object-cover" />
+        <img src="https://images.unsplash.com/photo-1600607687644-c7171b42498f?auto=format&fit=crop&q=80&w=2000" alt="Result" className="w-full h-full object-cover" />
       </div>
       <div className="relative z-20 h-full flex items-end p-6 md:p-20">
         <div className="max-w-4xl bg-black/20 backdrop-blur-md p-10 rounded-2xl border border-white/10">
